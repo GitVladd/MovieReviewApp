@@ -1,16 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MovieReviewApp.Data.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace MovieService.Models
 {
-	public class ContentType
+	public class Category : IEntity
 	{
-
 		[Key]
-		public int Id { get; set; }
+		public Guid Id { get; set; }
 
 		[Required]
 		public string Name { get; set; }
 
-		List<Movie> Movies { get; set; } = new List<Movie>();
+		public IEnumerable<Movie> Movies { get; set; }
 	}
 }
