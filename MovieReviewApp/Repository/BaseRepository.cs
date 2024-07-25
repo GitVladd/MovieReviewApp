@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MovieReviewApp.Data.Entities;
-using MovieReviewApp.Data.Enums;
-using MovieReviewApp.Data.Repository;
+using MovieReviewApp.Common.Entities;
+using MovieReviewApp.Common.Enums;
+using MovieReviewApp.Common.Repository;
 using System.Linq.Expressions;
 
-namespace MovieReviewApp.CommonModels.BaseClass
+namespace MovieService.Repository
 {
-    public abstract class BaseRepository<T> : IBaseRepository<T> where T : class,IEntity
+    public class BaseRepository<T> : IBaseRepository<T> where T : class,IEntity
 	{
 		protected readonly DbContext _context;
 

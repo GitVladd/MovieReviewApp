@@ -1,10 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MovieReviewApp.Data.Entities;
-using MovieReviewApp.Data.Enums;
+﻿using MovieReviewApp.Common.Entities;
+using MovieReviewApp.Common.Enums;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
 
-namespace MovieReviewApp.Data.Repository
+namespace MovieReviewApp.Common.Repository
 {
     public interface IBaseRepository<T> where T : IEntity
 	{

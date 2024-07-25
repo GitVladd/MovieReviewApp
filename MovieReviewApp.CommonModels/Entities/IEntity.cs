@@ -1,4 +1,4 @@
-﻿namespace MovieReviewApp.Data.Entities
+﻿namespace MovieReviewApp.Common.Entities
 {
 	public interface IEntity
 	{

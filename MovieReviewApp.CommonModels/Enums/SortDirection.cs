@@ -1,5 +1,5 @@
 ﻿
-namespace MovieReviewApp.Data.Enums
+namespace MovieReviewApp.Common.Enums
 {
 	public enum SortDirection
 	{
