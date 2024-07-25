@@ -2,15 +2,16 @@
 using MovieReviewApp.Common.Entities;
 using MovieReviewApp.Common.Enums;
 using MovieReviewApp.Common.Repository;
+using MovieReviewApp.Data;
 using System.Linq.Expressions;
 
 namespace MovieService.Repository
 {
     public class BaseRepository<T> : IBaseRepository<T> where T : class,IEntity
 	{
-		protected readonly DbContext _context;
+		protected readonly ApplicationDbContext _context;
 
-		public BaseRepository(DbContext context)
+		public BaseRepository(ApplicationDbContext context)
 		{
 			_context = context;
 		}

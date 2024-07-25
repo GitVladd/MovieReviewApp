@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using MovieReviewApp.Data.Repository;
+using MovieReviewApp.Common.Repository;
 using MovieService.Dtos.MovieDto;
 using MovieService.Models;
 

@@ -1,9 +1,9 @@
 
 using Microsoft.EntityFrameworkCore;
-using MovieReviewApp.CommonModels.BaseClass;
+using MovieReviewApp.Common.Repository;
 using MovieReviewApp.Data;
-using MovieReviewApp.Data.Repository;
 using MovieService.Models;
+using MovieService.Repository;
 
 namespace MovieReviewApp
 {

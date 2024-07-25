@@ -1,4 +1,4 @@
-﻿using MovieReviewApp.Data.Entities;
+﻿using MovieReviewApp.Common.Entities;
 using System.ComponentModel.DataAnnotations;
 
 namespace MovieService.Models
