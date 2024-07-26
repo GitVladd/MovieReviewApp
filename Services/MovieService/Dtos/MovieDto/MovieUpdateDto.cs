@@ -1,5 +1,6 @@
 ﻿using MovieReviewApp.Common.Attributes;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MovieService.Dtos.MovieDto
 {
@@ -18,5 +19,6 @@ namespace MovieService.Dtos.MovieDto
 
 		[Required]
 		public Guid ContentTypeId { get; set; }
+		public DateTime? ReleaseDate { get; set; }
 	}
 }
