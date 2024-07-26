@@ -34,7 +34,7 @@ namespace MovieService.Migrations
 
                     b.HasIndex("MoviesId");
 
-                    b.ToTable("CategoryMovie");
+                    b.ToTable("CategoryMovie", (string)null);
                 });
 
             modelBuilder.Entity("MovieService.Models.Category", b =>
@@ -49,7 +49,7 @@ namespace MovieService.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
 
                     b.HasData(
                         new
@@ -81,7 +81,7 @@ namespace MovieService.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ContentTypes");
+                    b.ToTable("ContentTypes", (string)null);
 
                     b.HasData(
                         new
@@ -127,7 +127,7 @@ namespace MovieService.Migrations
 
                     b.HasIndex("ContentTypeId");
 
-                    b.ToTable("Movies");
+                    b.ToTable("Movies", (string)null);
                 });
 
             modelBuilder.Entity("CategoryMovie", b =>
