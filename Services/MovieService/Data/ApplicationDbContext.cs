@@ -7,7 +7,6 @@ namespace MovieReviewApp.Data
 	{
 		public DbSet<Movie> Movies => Set<Movie>();
 		public DbSet<Category> Categories => Set<Category>();
-
 		public DbSet<ContentType> ContentTypes => Set<ContentType>();
 
 
