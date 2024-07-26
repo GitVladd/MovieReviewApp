@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MovieReviewApp.CommonModels\MovieReviewApp.Common.csproj" />
+    <ProjectReference Include="$(SolutionDir)\MovieReviewApp.CommonModels\MovieReviewApp.Common.csproj" />
   </ItemGroup>
 
 </Project>
