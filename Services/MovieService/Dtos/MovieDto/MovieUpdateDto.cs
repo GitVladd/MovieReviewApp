@@ -1,6 +1,5 @@
 ﻿using MovieReviewApp.Common.Attributes;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MovieService.Dtos.MovieDto
 {

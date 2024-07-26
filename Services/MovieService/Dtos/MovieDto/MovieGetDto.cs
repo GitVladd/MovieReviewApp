@@ -1,6 +1,5 @@
 ﻿using MovieService.Dtos.CategoryDto;
 using MovieService.Dtos.ContentTypeDto;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MovieService.Dtos.MovieDto
 {
