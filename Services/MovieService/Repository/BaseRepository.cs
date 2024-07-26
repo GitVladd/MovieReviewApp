@@ -40,8 +40,8 @@ namespace MovieService.Repository
 				foreach (var sortExpression in sortBy.Skip(1))
 				{
 					orderedQuery = sortDirection == SortDirection.Ascending
-						? ((IOrderedQueryable<T>)orderedQuery).ThenBy(sortExpression)
-						: ((IOrderedQueryable<T>)orderedQuery).ThenByDescending(sortExpression);
+						? orderedQuery.ThenBy(sortExpression)
+						: orderedQuery.ThenByDescending(sortExpression);
 				}
 
 				query = orderedQuery;
