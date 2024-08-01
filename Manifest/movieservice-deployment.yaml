@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: movieservice-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: movieservice
+  template:
+    metadata:
+      labels:
+        app: movieservice
+    spec:
+      containers:
+        - name: movieservice
+          image: vladockerhub/movieservice:latest
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: platforms-clusterip-srv
+# spec:
+#   type: ClusterIP
+#   selector:
+#     app: movieservice
+#   ports:
+#   - name: movieservice
+#     protocol: TCP
+#     port: 80
+#     targetPort: 80
+#   - name: plafromgrpc
+#     protocol: TCP
+#     port: 666
+#     targetPort: 666

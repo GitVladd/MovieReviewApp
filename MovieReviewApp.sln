@@ -11,6 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieReviewApp.Common", "Mo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{8771CA48-2503-430F-AB35-A7E36CC1F936}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Manifest", "Manifest", "{8E288C5E-14DE-40A2-A36E-2C3064526448}"
+	ProjectSection(SolutionItems) = preProject
+		Manifest\movieservice-deployment.yaml = Manifest\movieservice-deployment.yaml
+		movieservice-np-srv.yaml = movieservice-np-srv.yaml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
