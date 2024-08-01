@@ -17,10 +17,10 @@ namespace MovieService.Repository
 		}
 
 		public async Task<List<T>> GetAsync(
-			Expression<Func<T, bool>> predicate = null, 
-			int take = int.MaxValue, int skip = 0, 
-			IEnumerable<Expression<Func<T, object>>> sortBy = null, 
-			SortDirection sortDirection = SortDirection.Ascending, 
+			Expression<Func<T, bool>> predicate = null,
+			int take = int.MaxValue, int skip = 0,
+			IEnumerable<Expression<Func<T, object>>> sortBy = null,
+			SortDirection sortDirection = SortDirection.Ascending,
 			CancellationToken cancellationToken = default
 			)
 		{
@@ -46,9 +46,8 @@ namespace MovieService.Repository
 
 				query = orderedQuery;
 			}
-
 			query = query.Skip(skip).Take(take);
-				
+
 			return await query.ToListAsync(cancellationToken);
 		}
 
@@ -68,7 +67,7 @@ namespace MovieService.Repository
 		}
 
 		public void Delete(T entity)
-		{	
+		{
 			_context.Set<T>().Remove(entity);
 		}
 
