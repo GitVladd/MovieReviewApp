@@ -41,7 +41,7 @@ namespace MovieReviewApp
 
 			services.AddScoped(typeof(IBaseRepository<ContentType>), typeof(BaseRepository<ContentType>));
 			services.AddScoped(typeof(IBaseRepository<Category>), typeof(BaseRepository<Category>));
-			services.AddScoped(typeof(IBaseRepository<Movie>), typeof(BaseRepository<Movie>));
+			services.AddScoped<IMovieRepository, MovieRepository>();
 		}
 
 		private static void ConfigureMiddleware(WebApplication app)

@@ -27,9 +27,7 @@ namespace MovieService.Repository
 			var query = _context.Set<T>().AsQueryable();
 
 			if (predicate != null)
-			{
 				query = query.Where(predicate);
-			}
 
 			if (sortBy != null && sortBy.Any())
 			{

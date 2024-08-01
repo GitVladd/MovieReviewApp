@@ -15,13 +15,13 @@ namespace MovieService.Controllers
 	public class MovieController : ControllerBase
 	{
 		private readonly ILogger<MovieController> _logger;
-		private readonly IBaseRepository<Movie> _repository;
+		private readonly IMovieRepository _repository;
 		private readonly IBaseRepository<Category> _categoryRepository;
 		private readonly IBaseRepository<ContentType> _contentTypeRepository;
 		private readonly IMapper _mapper;
 		public MovieController(
 			ILogger<MovieController> logger,
-			IBaseRepository<Movie> repository,
+			IMovieRepository repository,
 			IBaseRepository<Category> categoryRepository,
 			IBaseRepository<ContentType> contentTypeRepository,
 			IMapper mapper)
@@ -40,7 +40,7 @@ namespace MovieService.Controllers
 
 			try
 			{
-				var entities = await _repository.GetAsync();
+				var entities = await _repository.GetAllWithDetailsAsync();
 				var entitiesGetDtos = _mapper.Map<IEnumerable<MovieGetDto>>(entities);
 				return Ok(entitiesGetDtos);
 			}
