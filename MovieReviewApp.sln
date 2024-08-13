@@ -13,8 +13,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{87
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Manifest", "Manifest", "{8E288C5E-14DE-40A2-A36E-2C3064526448}"
 	ProjectSection(SolutionItems) = preProject
+		Manifest\ingress-srv.yaml = Manifest\ingress-srv.yaml
 		Manifest\movieservice-deployment.yaml = Manifest\movieservice-deployment.yaml
-		movieservice-np-srv.yaml = movieservice-np-srv.yaml
+		Manifest\movieservice-np-srv.yaml = Manifest\movieservice-np-srv.yaml
 	EndProjectSection
 EndProject
 Global

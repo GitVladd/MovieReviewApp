@@ -1,5 +1,7 @@
-﻿using MovieService.Dtos.MovieDto;
+﻿using MovieService.Controllers;
+using MovieService.Dtos.MovieDto;
 using System;
+using System.Reflection;
 using System.Text;
 using System.Text.Json;
 
@@ -9,10 +11,15 @@ using System.Text.Json;
 public class HttpCommandDataClient : IHttpCommandDataClient
 {
 	private readonly HttpClient _httpClient;
+	private readonly IConfiguration _configuration;
+	ILogger<HttpCommandDataClient> _logger;
 	private readonly string _commandServiceURL;
-	public HttpCommandDataClient(HttpClient httpClient)
+	public HttpCommandDataClient(HttpClient httpClient, IConfiguration configuration, ILogger<HttpCommandDataClient> logger)
 	{
 		_httpClient = httpClient;
+		_configuration = configuration;
+		_logger = logger;
+		_commandServiceURL = configuration["ReviewService"];
 	}
 
 	public async Task SendMovieToReview(MovieGetDto dto)
@@ -38,7 +45,7 @@ public class HttpCommandDataClient : IHttpCommandDataClient
 		}
 		catch (Exception ex)
 		{
-
+			_logger.LogError(ex.ToString());
 		}
 	}
 }
