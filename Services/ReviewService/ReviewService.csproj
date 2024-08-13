@@ -15,4 +15,13 @@
 	  <ProjectReference Include="$(SolutionDir)\MovieReviewApp.CommonModels\MovieReviewApp.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+    <Folder Include="Models\" />
+    <Folder Include="Dtos\" />
+    <Folder Include="Data\" />
+    <Folder Include="Repository\" />
+    <Folder Include="NewFolder\" />
+  </ItemGroup>
+
 </Project>
