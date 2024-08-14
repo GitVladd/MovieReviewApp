@@ -10,5 +10,6 @@ namespace MovieService.Dtos.MovieDto
 		public string Description { get; set; }
 		public List<CategoryGetDto> Categories { get; set; }
 		public ContentTypeGetDto ContentType { get; set; }
+		public DateTime? ReleaseDate { get; set; }
 	}
 }

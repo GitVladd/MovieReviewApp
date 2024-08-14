@@ -18,16 +18,16 @@ namespace MovieReviewApp.Data
 		{
 			base.OnModelCreating(modelBuilder);
 
-			modelBuilder.Entity<ContentType>().HasData(
-				new ContentType { Id = Guid.NewGuid(), Name = "Action" },
-				new ContentType { Id = Guid.NewGuid(), Name = "Comedy" },
-				new ContentType { Id = Guid.NewGuid(), Name = "Drama" }
+			modelBuilder.Entity<Category>().HasData(
+				new Category { Id = Guid.NewGuid(), Name = "Action" },
+				new Category { Id = Guid.NewGuid(), Name = "Comedy" },
+				new Category { Id = Guid.NewGuid(), Name = "Drama" }
 			);
 
-			modelBuilder.Entity<Category>().HasData(
-				new Category { Id = Guid.NewGuid(), Name = "Movie" },
-				new Category { Id = Guid.NewGuid(), Name = "Series" },
-				new Category { Id = Guid.NewGuid(), Name = "Anime" }
+			modelBuilder.Entity<ContentType>().HasData(
+				new ContentType { Id = Guid.NewGuid(), Name = "Movie" },
+				new ContentType { Id = Guid.NewGuid(), Name = "Series" },
+				new ContentType { Id = Guid.NewGuid(), Name = "Anime" }
 			);
 		}
 

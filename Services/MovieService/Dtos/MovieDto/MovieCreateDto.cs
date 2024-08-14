@@ -19,5 +19,7 @@ namespace MovieService.Dtos.MovieDto
 
 		[Required]
 		public Guid ContentTypeId { get; set; }
+
+		public DateTime? ReleaseDate { get; set; }
 	}
 }

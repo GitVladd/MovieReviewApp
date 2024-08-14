@@ -1,9 +1,8 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using MovieReviewApp.Common.Repository;
+﻿using Microsoft.AspNetCore.Mvc;
 using MovieService.Dtos.MovieDto;
 using MovieService.Models;
+using MovieService.Service;
+using System.Reflection;
 
 namespace MovieService.Controllers
 {
@@ -12,15 +11,14 @@ namespace MovieService.Controllers
 	public class MovieController : ControllerBase
 	{
 		private readonly ILogger<MovieController> _logger;
-		private readonly IBaseRepository<Movie> _repository;
-		private readonly IMapper _mapper;
-		public MovieController(ILogger<MovieController> logger, IBaseRepository<Movie> repository, IMapper mapper)
+		private readonly IMovieService _movieService;
+		public MovieController(
+			ILogger<MovieController> logger,
+			IMovieService movieService)
 		{
 			_logger = logger;
-			_repository = repository;
-			_mapper = mapper;
+			_movieService = movieService;
 		}
-
 		[HttpGet]
 		public async Task<ActionResult<List<MovieGetDto>>> GetAll()
 		{
@@ -28,36 +26,31 @@ namespace MovieService.Controllers
 
 			try
 			{
-				var entities = await _repository.GetAsync();
-				var entitiesGetDtos = _mapper.Map<IEnumerable<MovieGetDto>>(entities);
-				return Ok(entitiesGetDtos);
+				var result = await _movieService.GetAllWithDetailsAsync();
+				return Ok(result);
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError(ex, "Error: Movie Controller GetAll()");
-				return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while fetching movies.");
+				return HandleError(ex, nameof(GetAll));
 			}
 		}
 
-
 		[HttpGet("{id:Guid}")]
-		public async Task<ActionResult<List<MovieGetDto>>> GetById([FromRoute] Guid id)
+		public async Task<ActionResult<MovieGetDto>> GetById([FromRoute] Guid id)
 		{
 			if (!ModelState.IsValid) return BadRequest(ModelState);
 
 			try
 			{
-				var entity = await _repository.GetByIdAsync(id);
-
+				var entity = await _movieService.GetByIdWithDetailsAsync(id);
 				if (entity == null)
 					return NotFound();
 
-				return Ok(_mapper.Map<MovieGetDto>(entity));
+				return Ok(entity);
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError(ex, "Error: Movie Controller GetById()");
-				return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while fetching movies.");
+				return HandleError(ex, nameof(GetById));
 			}
 		}
 
@@ -65,71 +58,58 @@ namespace MovieService.Controllers
 		public async Task<ActionResult<MovieGetDto>> Create([FromBody] MovieCreateDto createDto)
 		{
 			if (!ModelState.IsValid) return BadRequest(ModelState);
+
 			try
 			{
-				var entity = _mapper.Map<Movie>(createDto);
-
-				_repository.Create(entity);
-				await _repository.SaveAsync();
-
-				var entityGetDto = _mapper.Map<MovieGetDto>(entity);
-
-				return CreatedAtAction(nameof(GetById), new { id = entityGetDto.Id }, entityGetDto);
+				var createdEntity = await _movieService.CreateAsync(createDto);
+				return CreatedAtAction(nameof(GetById), new { id = createdEntity.Id }, createdEntity);
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError(ex, "Error: Movie Controller Create()");
-				return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while creating the movie.");
+				return HandleError(ex, nameof(Create));
 			}
 		}
 
 		[HttpPut("{id:Guid}")]
-		public async Task<ActionResult<MovieGetDto>> Update(Guid id, [FromBody] MovieUpdateDto updateDto)
+		public async Task<ActionResult<MovieGetDto>> Update([FromRoute] Guid id, [FromBody] MovieUpdateDto updateDto)
 		{
 			if (!ModelState.IsValid) return BadRequest(ModelState);
+
 			try
 			{
-				var entity = await _repository.GetByIdAsync(id);
-
-				if (entity == null)
+				var updatedEntity = await _movieService.UpdateAsync(id, updateDto);
+				if (updatedEntity == null)
 					return NotFound();
 
-				_repository.Update(entity);
-				await _repository.SaveAsync();
-
-				var movieGetDto = _mapper.Map<MovieGetDto>(entity);
-
-				return CreatedAtAction(nameof(GetById), new { id = movieGetDto.Id }, movieGetDto);
+				return Ok(updatedEntity);
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError(ex, "Error: Movie Controller Update()");
-				return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while creating the movie.");
+				return HandleError(ex, nameof(Update));
 			}
 		}
+
 		[HttpDelete("{id:Guid}")]
-		public async Task<ActionResult> Delete(Guid id)
+		public async Task<ActionResult> Delete([FromRoute] Guid id)
 		{
 			if (!ModelState.IsValid) return BadRequest(ModelState);
+
 			try
 			{
-				var entity = await _repository.GetByIdAsync(id);
-
-				if (entity == null)
-					return NotFound();
-
-				_repository.Delete(entity);
-				await _repository.SaveAsync();
-
-				var movieGetDto = _mapper.Map<MovieGetDto>(entity);
-
-				return CreatedAtAction(nameof(GetById), new { id = movieGetDto.Id }, movieGetDto);
+				await _movieService.DeleteAsync(id);
+				return NoContent();
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError(ex, "Error: Movie Controller Delete()");
-				return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while creating the movie.");
+				return HandleError(ex, nameof(Delete));
 			}
+		}
+
+		private ActionResult HandleError(Exception ex, string methodName)
+		{
+			var className = GetType().Name;
+			_logger.LogError(ex, $"Error in {className}.{methodName}");
+			return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing your request in {className}.{methodName}.");
 		}
 	}
 }
