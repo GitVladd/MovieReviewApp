@@ -18,6 +18,7 @@ namespace MovieService.Repository
 
 		public async Task<List<T>> GetAsync(
 			Expression<Func<T, bool>> predicate = null,
+			IEnumerable<Expression<Func<T, object>>> include = null,
 			int take = int.MaxValue, int skip = 0,
 			IEnumerable<Expression<Func<T, object>>> sortBy = null,
 			SortDirection sortDirection = SortDirection.Ascending,
@@ -25,6 +26,11 @@ namespace MovieService.Repository
 			)
 		{
 			var query = _context.Set<T>().AsQueryable();
+
+			if (include != null && include.Any())
+			{
+				query = include.Aggregate(query, (current, includeExpression) => current.Include(includeExpression));
+			}
 
 			if (predicate != null)
 				query = query.Where(predicate);
@@ -47,11 +53,6 @@ namespace MovieService.Repository
 			query = query.Skip(skip).Take(take);
 
 			return await query.ToListAsync(cancellationToken);
-		}
-
-		public async Task<T> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
-		{
-			return await _context.Set<T>().FindAsync(id, cancellationToken);
 		}
 
 		public void Create(T entity)

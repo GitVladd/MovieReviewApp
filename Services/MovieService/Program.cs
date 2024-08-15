@@ -41,6 +41,9 @@ namespace MovieReviewApp
 			services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 			services.AddScoped<IMovieService, MovieService.Service.MovieService>();
+			services.AddScoped<ICategoryService, CategoryService>();
+			services.AddScoped<IContentTypeService, ContentTypeService>();
+
 
 			services.AddScoped(typeof(IBaseRepository<ContentType>), typeof(BaseRepository<ContentType>));
 			services.AddScoped(typeof(IBaseRepository<Category>), typeof(BaseRepository<Category>));

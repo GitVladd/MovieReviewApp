@@ -1,8 +1,6 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using MovieReviewApp.Common.Repository;
+﻿using Microsoft.AspNetCore.Mvc;
 using MovieService.Dtos.ContentTypeDto;
-using MovieService.Models;
+using MovieService.Service;
 using System.Reflection;
 
 namespace MovieService.Controllers
@@ -13,13 +11,13 @@ namespace MovieService.Controllers
 	public class ContentTypeController : Controller
 	{
 		private readonly ILogger<ContentTypeController> _logger;
-		private readonly IBaseRepository<ContentType> _repository;
-		private readonly IMapper _mapper;
-		public ContentTypeController(ILogger<ContentTypeController> logger, IBaseRepository<ContentType> repository, IMapper mapper)
+		private readonly IContentTypeService _service;
+		public ContentTypeController(
+			ILogger<ContentTypeController> logger, 
+			IContentTypeService service)
 		{
 			_logger = logger;
-			_repository = repository;
-			_mapper = mapper;
+			_service = service;
 		}
 
 		[HttpGet]
@@ -29,8 +27,7 @@ namespace MovieService.Controllers
 
 			try
 			{
-				var entities = await _repository.GetAsync();
-				var entitiesGetDtos = _mapper.Map<IEnumerable<ContentTypeGetDto>>(entities);
+				var entitiesGetDtos = await _service.GetAsync();
 				return Ok(entitiesGetDtos);
 			}
 			catch (Exception ex)
@@ -49,12 +46,12 @@ namespace MovieService.Controllers
 
 			try
 			{
-				var entity = await _repository.GetByIdAsync(id);
+				var entityGetDto = await _service.GetByIdAsync(id);
 
-				if (entity == null)
+				if (entityGetDto == null)
 					return NotFound();
 
-				return Ok(_mapper.Map<ContentTypeGetDto>(entity));
+				return Ok(entityGetDto);
 			}
 			catch (Exception ex)
 			{
@@ -73,12 +70,7 @@ namespace MovieService.Controllers
 
 			try
 			{
-				var entity = _mapper.Map<ContentType>(createDto);
-
-				_repository.Create(entity);
-				await _repository.SaveAsync();
-
-				var entityGetDto = _mapper.Map<ContentTypeGetDto>(entity);
+				var entityGetDto = await _service.CreateAsync(createDto);
 
 				return CreatedAtAction(nameof(GetById), new { id = entityGetDto.Id }, entityGetDto);
 			}

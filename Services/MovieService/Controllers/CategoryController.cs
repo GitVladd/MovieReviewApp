@@ -1,8 +1,7 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using MovieReviewApp.Common.Repository;
+﻿using Microsoft.AspNetCore.Mvc;
 using MovieService.Dtos.CategoryDto;
 using MovieService.Models;
+using MovieService.Service;
 using System.Reflection;
 
 namespace MovieService.Controllers
@@ -13,13 +12,13 @@ namespace MovieService.Controllers
 	public class CategoryController : ControllerBase
 	{
 		private readonly ILogger<CategoryController> _logger;
-		private readonly IBaseRepository<Category> _repository;
-		private readonly IMapper _mapper;
-		public CategoryController(ILogger<CategoryController> logger, IBaseRepository<Category> repository, IMapper mapper)
+		private readonly ICategoryService _service;
+		public CategoryController(
+			ILogger<CategoryController> logger, 
+			ICategoryService service)
 		{
 			_logger = logger;
-			_repository = repository;
-			_mapper = mapper;
+			_service = service;
 		}
 
 		[HttpGet]
@@ -29,8 +28,7 @@ namespace MovieService.Controllers
 
 			try
 			{
-				var entities = await _repository.GetAsync();
-				var entitiesGetDtos = _mapper.Map<IEnumerable<CategoryGetDto>>(entities);
+				var entitiesGetDtos = await _service.GetAsync();
 				return Ok(entitiesGetDtos);
 			}
 			catch (Exception ex)
@@ -49,12 +47,12 @@ namespace MovieService.Controllers
 
 			try
 			{
-				var entity = await _repository.GetByIdAsync(id);
+				var entityGetDto = await _service.GetByIdAsync(id);
 
-				if (entity == null)
+				if (entityGetDto == null)
 					return NotFound();
 
-				return Ok(_mapper.Map<CategoryGetDto>(entity));
+				return Ok(entityGetDto);
 			}
 			catch (Exception ex)
 			{
@@ -72,12 +70,7 @@ namespace MovieService.Controllers
 
 			try
 			{
-				var entity = _mapper.Map<Category>(createDto);
-
-				_repository.Create(entity);
-				await _repository.SaveAsync();
-
-				var entityGetDto = _mapper.Map<CategoryGetDto>(entity);
+				var entityGetDto = await _service.CreateAsync(createDto);
 
 				return CreatedAtAction(nameof(GetById), new { id = entityGetDto.Id }, entityGetDto);
 			}

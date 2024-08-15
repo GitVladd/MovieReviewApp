@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MovieService.Dtos.MovieDto;
-using MovieService.Models;
 using MovieService.Service;
-using System.Reflection;
 
 namespace MovieService.Controllers
 {
