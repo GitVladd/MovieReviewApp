@@ -3,10 +3,7 @@ using MovieReviewApp.Common.Enums;
 using MovieReviewApp.Common.Repository;
 using MovieService.Dtos.CategoryDto;
 using MovieService.Models;
-using System.Globalization;
-using System;
 using System.Linq.Expressions;
-using System.Threading;
 
 namespace MovieService.Service
 {
