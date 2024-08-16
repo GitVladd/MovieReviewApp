@@ -1,29 +1,12 @@
-﻿using MovieReviewApp.Common.Entities;
-using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using MovieReviewApp.Common.Entities;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace UserService.Models
 {
-	public class User : IEntity
+	public class User : IdentityUser<Guid>, IEntity
 	{
-		[Key]
-		public Guid Id { get; set; }
-
-		[Required]
-		[StringLength(50)]
-		public string Username { get; set; }
-
-		[Required]
-		[EmailAddress]
-		public string Email { get; set; }
-
-		[Required]
-		public string PasswordHash { get; set; }
-
 		[Column(TypeName = "Date")]
 		public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
-
-		[Column(TypeName = "Date")]
-		public DateTime? LastLoginDate { get; set; }
 	}
 }
