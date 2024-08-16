@@ -30,7 +30,7 @@ namespace MovieReviewApp
 		private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
 		{
 			var connectionString = configuration.GetConnectionString("DefaultConnection");
-			services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+			services.AddDbContext<DbContext, ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
 			// Add services to the container.
 			services.AddControllers();

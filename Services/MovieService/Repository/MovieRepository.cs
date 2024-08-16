@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieReviewApp.Common.Enums;
+using MovieReviewApp.Common.Repository;
 using MovieReviewApp.Data;
 using MovieService.Models;
 using System.Linq.Expressions;
@@ -51,7 +52,7 @@ namespace MovieService.Repository
 
 		public async Task<Movie> GetByIdWithDetailsAsync(Guid id, CancellationToken cancellationToken = default)
 		{
-			return await _context.Movies
+			return await _context.Set<Movie>()
 						 .Include(m => m.Categories)
 						 .Include(m => m.ContentType)
 						 .FirstOrDefaultAsync(m => m.Id == id, cancellationToken);
