@@ -1,4 +1,3 @@
-
 using Microsoft.EntityFrameworkCore;
 using MovieReviewApp.Common.Repository;
 using MovieReviewApp.Data;
@@ -21,8 +20,7 @@ namespace MovieReviewApp
 
 			var app = builder.Build();
 
-			ConfigureMiddleware(app);
-			ConfigureEndpoints(app);
+			Configure(app);
 
 			app.Run();
 		}
@@ -32,13 +30,14 @@ namespace MovieReviewApp
 			var connectionString = configuration.GetConnectionString("DefaultConnection");
 			services.AddDbContext<DbContext, ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
-			// Add services to the container.
 			services.AddControllers();
-			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 			services.AddEndpointsApiExplorer();
 			services.AddSwaggerGen();
 
 			services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+			services.AddJwtAuthentication(configuration);
 
 			services.AddScoped<IMovieService, MovieService.Service.MovieService>();
 			services.AddScoped<ICategoryService, CategoryService>();
@@ -52,9 +51,8 @@ namespace MovieReviewApp
 			services.AddHttpClient<IHttpCommandDataClient, HttpCommandDataClient>();
 		}
 
-		private static void ConfigureMiddleware(WebApplication app)
+		private static void Configure(WebApplication app)
 		{
-			// Configure the HTTP request pipeline.
 			if (app.Environment.IsDevelopment())
 			{
 				app.UseSwagger();
@@ -63,13 +61,13 @@ namespace MovieReviewApp
 
 			app.UseHttpsRedirection();
 
+			app.UseAuthentication();
 			app.UseAuthorization();
+
+			app.MapControllers();
+
 		}
 
-		private static void ConfigureEndpoints(WebApplication app)
-		{
-			app.MapControllers();
-		}
 
 	}
 }
