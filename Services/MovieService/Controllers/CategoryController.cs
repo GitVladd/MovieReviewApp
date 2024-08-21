@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MovieService.Dtos.CategoryDto;
-using MovieService.Models;
 using MovieService.Service;
 using System.Reflection;
 
@@ -63,7 +63,10 @@ namespace MovieService.Controllers
 			}
 		}
 
+
+
 		[HttpPost]
+		[Authorize(Roles = "Admin, Moderator")]
 		public async Task<ActionResult<CategoryGetDto>> Create([FromBody] CategoryCreateDto createDto)
 		{
 			if (!ModelState.IsValid) return BadRequest(ModelState);

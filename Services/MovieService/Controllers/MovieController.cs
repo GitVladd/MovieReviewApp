@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MovieService.Dtos.MovieDto;
 using MovieService.Service;
 
@@ -53,6 +54,8 @@ namespace MovieService.Controllers
 		}
 
 		[HttpPost]
+		[Authorize(Roles = "Admin, Moderator")]
+
 		public async Task<ActionResult<MovieGetDto>> Create([FromBody] MovieCreateDto createDto)
 		{
 			if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -69,6 +72,8 @@ namespace MovieService.Controllers
 		}
 
 		[HttpPut("{id:Guid}")]
+		[Authorize(Roles = "Admin, Moderator")]
+
 		public async Task<ActionResult<MovieGetDto>> Update([FromRoute] Guid id, [FromBody] MovieUpdateDto updateDto)
 		{
 			if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -88,6 +93,7 @@ namespace MovieService.Controllers
 		}
 
 		[HttpDelete("{id:Guid}")]
+		[Authorize(Roles = "Admin")]
 		public async Task<ActionResult> Delete([FromRoute] Guid id)
 		{
 			if (!ModelState.IsValid) return BadRequest(ModelState);
