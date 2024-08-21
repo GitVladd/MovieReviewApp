@@ -9,7 +9,7 @@ namespace ReviewService.Models
 		[Key]
 		public Guid Id { get; set; }
 
-		[Required]]
+		[Required]
 		public Guid MovieId { get; set; }
 
 		[Required]
