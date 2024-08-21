@@ -7,7 +7,7 @@ namespace MovieService.Dtos.MovieDto
 	{
 
 		[Required]
-		[StringLength(32)]
+		[StringLength(100)]
 		public string Title { get; set; }
 
 		[StringLength(1024)]

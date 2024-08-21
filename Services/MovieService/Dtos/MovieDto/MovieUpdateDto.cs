@@ -6,7 +6,7 @@ namespace MovieService.Dtos.MovieDto
 	public class MovieUpdateDto
 	{
 		[Required]
-		[StringLength(32)]
+		[StringLength(64)]
 		public string Title { get; set; }
 
 		[StringLength(1024)]

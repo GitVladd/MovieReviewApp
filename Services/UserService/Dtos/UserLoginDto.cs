@@ -5,9 +5,11 @@ namespace UserService.Dtos
 	public class UserLoginDto
 	{
 		[Required]
-		public string Username { get; set; }
+		[StringLength(20)]
+		public string Username{ get; set; }
 
 		[Required]
+		[StringLength(64)]
 		public string Password { get; set; }
 	}
 }
