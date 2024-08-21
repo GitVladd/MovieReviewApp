@@ -40,7 +40,7 @@ public static class ServiceCollectionExtensions
 					ValidateIssuerSigningKey = true,
 					ValidIssuer = issuer,
 					ValidAudience = audience,
-					IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key))
+					IssuerSigningKey = new SymmetricSecurityKey(Convert.FromBase64String(key))
 				};
 			});
 
