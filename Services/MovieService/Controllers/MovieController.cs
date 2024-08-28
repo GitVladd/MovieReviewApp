@@ -6,7 +6,7 @@ using MovieService.Service;
 namespace MovieService.Controllers
 {
 	[ApiController]
-	[Route("api/[controller]")]
+	[Route("api/movies")]
 	public class MovieController : ControllerBase
 	{
 		private readonly ILogger<MovieController> _logger;

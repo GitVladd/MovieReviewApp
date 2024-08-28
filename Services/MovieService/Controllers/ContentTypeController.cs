@@ -8,7 +8,7 @@ namespace MovieService.Controllers
 {
 
 	[ApiController]
-	[Route("api/[controller]")]
+	[Route("api/contenttypes")]
 	public class ContentTypeController : Controller
 	{
 		private readonly ILogger<ContentTypeController> _logger;
