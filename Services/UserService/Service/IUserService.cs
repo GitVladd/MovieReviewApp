@@ -6,5 +6,6 @@ namespace UserService.Service
 	{
 		Task<string> RegisterAsync(UserRegisterDto userRegisterDto);
 		Task<string> LoginAsync(UserLoginDto userLoginDto);
+		Task<bool> AssignRoleToUserAsync(Guid userId, string roleName);
 	}
 }
