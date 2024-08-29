@@ -4,20 +4,17 @@ using MovieReviewApp.Common.Exceptions;
 using UserService.Dtos;
 using UserService.Exceptions;
 using UserService.Models;
-using UserService.Exceptions;
-using System;
-
 namespace UserService.Service
 {
     public class UserService : IUserService
     {
         private readonly UserManager<User> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly RoleManager<IdentityRole<Guid>> _roleManager;
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
         private readonly IJwtGeneratorService _jwtGeneratorService;
 
-        public UserService(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IMapper mapper, IConfiguration configuration, IJwtGeneratorService jwtGeneratorService)
+        public UserService(UserManager<User> userManager, RoleManager<IdentityRole<Guid>> roleManager, IMapper mapper, IConfiguration configuration, IJwtGeneratorService jwtGeneratorService)
         {
             _userManager = userManager;
             _roleManager = roleManager;
