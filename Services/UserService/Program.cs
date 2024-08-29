@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MovieReviewApp.Common.Middlewares;
 using UserService.Data;
+using UserService.Middleware;
 using UserService.Models;
 using UserService.Service;
 
@@ -71,7 +72,8 @@ namespace ReviewService
 
 			services.AddJwtAuthentication(configuration);
 
-			services.AddExceptionHandler<GlobalExceptionHandler>();
+            services.AddExceptionHandler<UserGlobalExceptionHandler>();
+            services.AddExceptionHandler<GlobalExceptionHandler>();
 			services.AddProblemDetails();
         }
 

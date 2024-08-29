@@ -4,6 +4,7 @@ using MovieReviewApp.Common.Exceptions;
 using UserService.Dtos;
 using UserService.Exceptions;
 using UserService.Models;
+
 namespace UserService.Service
 {
     public class UserService : IUserService
