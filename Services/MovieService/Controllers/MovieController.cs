@@ -5,115 +5,72 @@ using MovieService.Service;
 
 namespace MovieService.Controllers
 {
-	[ApiController]
-	[Route("api/movies")]
-	public class MovieController : ControllerBase
-	{
-		private readonly ILogger<MovieController> _logger;
-		private readonly IMovieService _movieService;
-		public MovieController(
-			ILogger<MovieController> logger,
-			IMovieService movieService)
-		{
-			_logger = logger;
-			_movieService = movieService;
-		}
-		[HttpGet]
-		public async Task<ActionResult<List<MovieGetDto>>> GetAll()
-		{
-			if (!ModelState.IsValid) return BadRequest(ModelState);
+    [ApiController]
+    [Route("api/movies")]
+    public class MovieController : ControllerBase
+    {
+        private readonly IMovieService _movieService;
+        public MovieController(
+            IMovieService movieService)
+        {
+            _movieService = movieService;
+        }
+        [HttpGet]
+        public async Task<ActionResult<List<MovieGetDto>>> GetAll()
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
-			try
-			{
-				var result = await _movieService.GetAllWithDetailsAsync();
-				return Ok(result);
-			}
-			catch (Exception ex)
-			{
-				return HandleError(ex, nameof(GetAll));
-			}
-		}
+            var result = await _movieService.GetAllWithDetailsAsync();
+            return Ok(result);
+        }
 
-		[HttpGet("{id:Guid}")]
-		public async Task<ActionResult<MovieGetDto>> GetById([FromRoute] Guid id)
-		{
-			if (!ModelState.IsValid) return BadRequest(ModelState);
+        [HttpGet("{id:Guid}")]
+        public async Task<ActionResult<MovieGetDto>> GetById([FromRoute] Guid id)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
-			try
-			{
-				var entity = await _movieService.GetByIdWithDetailsAsync(id);
-				if (entity == null)
-					return NotFound();
 
-				return Ok(entity);
-			}
-			catch (Exception ex)
-			{
-				return HandleError(ex, nameof(GetById));
-			}
-		}
+            var entity = await _movieService.GetByIdWithDetailsAsync(id);
+            if (entity == null)
+                return NotFound();
 
-		[HttpPost]
-		[Authorize(Roles = "Admin, Moderator")]
+            return Ok(entity);
+        }
 
-		public async Task<ActionResult<MovieGetDto>> Create([FromBody] MovieCreateDto createDto)
-		{
-			if (!ModelState.IsValid) return BadRequest(ModelState);
+        [HttpPost]
+        [Authorize(Roles = "Admin, Moderator")]
 
-			try
-			{
-				var createdEntity = await _movieService.CreateAsync(createDto);
-				return CreatedAtAction(nameof(GetById), new { id = createdEntity.Id }, createdEntity);
-			}
-			catch (Exception ex)
-			{
-				return HandleError(ex, nameof(Create));
-			}
-		}
+        public async Task<ActionResult<MovieGetDto>> Create([FromBody] MovieCreateDto createDto)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
-		[HttpPut("{id:Guid}")]
-		[Authorize(Roles = "Admin, Moderator")]
+            var createdEntity = await _movieService.CreateAsync(createDto);
+            return CreatedAtAction(nameof(GetById), new { id = createdEntity.Id }, createdEntity);
+        }
 
-		public async Task<ActionResult<MovieGetDto>> Update([FromRoute] Guid id, [FromBody] MovieUpdateDto updateDto)
-		{
-			if (!ModelState.IsValid) return BadRequest(ModelState);
+        [HttpPut("{id:Guid}")]
+        [Authorize(Roles = "Admin, Moderator")]
 
-			try
-			{
-				var updatedEntity = await _movieService.UpdateAsync(id, updateDto);
-				if (updatedEntity == null)
-					return NotFound();
+        public async Task<ActionResult<MovieGetDto>> Update([FromRoute] Guid id, [FromBody] MovieUpdateDto updateDto)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
-				return Ok(updatedEntity);
-			}
-			catch (Exception ex)
-			{
-				return HandleError(ex, nameof(Update));
-			}
-		}
 
-		[HttpDelete("{id:Guid}")]
-		[Authorize(Roles = "Admin")]
-		public async Task<ActionResult> Delete([FromRoute] Guid id)
-		{
-			if (!ModelState.IsValid) return BadRequest(ModelState);
+            var updatedEntity = await _movieService.UpdateAsync(id, updateDto);
+            if (updatedEntity == null)
+                return NotFound();
 
-			try
-			{
-				await _movieService.DeleteAsync(id);
-				return NoContent();
-			}
-			catch (Exception ex)
-			{
-				return HandleError(ex, nameof(Delete));
-			}
-		}
+            return Ok(updatedEntity);
+        }
 
-		private ActionResult HandleError(Exception ex, string methodName)
-		{
-			var className = GetType().Name;
-			_logger.LogError(ex, $"Error in {className}.{methodName}");
-			return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while processing your request in {className}.{methodName}.");
-		}
-	}
+        [HttpDelete("{id:Guid}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult> Delete([FromRoute] Guid id)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            await _movieService.DeleteAsync(id);
+            return NoContent();
+        }
+    }
 }

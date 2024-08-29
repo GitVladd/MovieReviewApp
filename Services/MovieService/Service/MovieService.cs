@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http.HttpResults;
 using MovieReviewApp.Common.Enums;
+using MovieReviewApp.Common.Exceptions;
 using MovieReviewApp.Common.Repository;
 using MovieService.Controllers;
 using MovieService.Dtos.MovieDto;
@@ -94,14 +96,14 @@ namespace MovieService.Service
 		{
 			var contentType = await _contentTypeService.GetByIdAsync(createDto.ContentTypeId);
 			if (contentType == null)
-				throw new ArgumentException($"There is no content type with the id: {createDto.ContentTypeId}");
+                throw new EntityNotFoundException($"Content type not found. id:{createDto.ContentTypeId}");
 
-			var categories = await _categoryService.GetAsync( predicate: c => createDto.CategoryIds.Contains(c.Id));
+            var categories = await _categoryService.GetAsync( predicate: c => createDto.CategoryIds.Contains(c.Id));
 			if (categories.Count() != createDto.CategoryIds.Count())
 			{
 				var foundCategoryIds = categories.Select(c => c.Id).ToList();
 				var missingCategoryIds = createDto.CategoryIds.Except(foundCategoryIds).ToList();
-				throw new ArgumentException($"The following category IDs were not found: {string.Join(", ", missingCategoryIds)}");
+                throw new EntityNotFoundException($"Category not found. id:{string.Join(", id:", missingCategoryIds)}");
 			}
 
 			var entity = _mapper.Map<Movie>(createDto);
@@ -118,16 +120,17 @@ namespace MovieService.Service
 		{
 			var entity = await _repository.GetByIdWithDetailsAsync(id);
 			if (entity == null) 
-				return null; // Return null to indicate not found
+				return null;
 
 			if (entity.ContentType.Id != updateDto.ContentTypeId)
 			{
 				var contentType = await _contentTypeService.GetByIdAsync(updateDto.ContentTypeId);
-				if (contentType == null)
+                if (contentType == null)
 				{
-					throw new ArgumentException($"Content type with id {updateDto.ContentTypeId} not found.");
-				}
-				entity.ContentType = _mapper.Map<ContentType>(contentType);
+                    throw new EntityNotFoundException($"Content type not found. id:{updateDto.ContentTypeId}");
+
+                }
+                entity.ContentType = _mapper.Map<ContentType>(contentType);
 			}
 
 			var categories = await _categoryService.GetAsync(c => updateDto.CategoryIds.Contains(c.Id));
@@ -136,10 +139,11 @@ namespace MovieService.Service
 				.ToList();
 			if (missingCategoryIds.Any())
 			{
-				throw new ArgumentException($"The following category IDs were not found: {string.Join(", ", missingCategoryIds)}");
-			}
+                throw new EntityNotFoundException($"Category not found. id:{string.Join(", id:", missingCategoryIds)}");
 
-			entity = _mapper.Map(updateDto, entity);
+            }
+
+            entity = _mapper.Map(updateDto, entity);
 
 			_repository.Update(entity);
 			await _repository.SaveAsync();
@@ -153,10 +157,10 @@ namespace MovieService.Service
 			var entity = await _repository.GetByIdWithDetailsAsync(id);
 			if (entity == null)
 			{
-				throw new ArgumentException($"Movie with id {id} not found.");
-			}
+				throw new EntityNotFoundException($"Movie type not found. id:{id}");
+            }
 
-			_repository.Delete(entity);
+            _repository.Delete(entity);
 			await _repository.SaveAsync();
 		}
 	}
