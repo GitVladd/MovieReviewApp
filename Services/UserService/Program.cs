@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using MovieReviewApp.Common.Repository;
+using MovieReviewApp.Common.Middlewares;
 using UserService.Data;
 using UserService.Models;
 using UserService.Service;
@@ -19,12 +19,6 @@ namespace ReviewService
 			ConfigureServices(builder.Services, builder.Configuration);
 
 			var app = builder.Build();
-
-			//using (var scope = app.Services.CreateScope())
-			//{
-			//	var services = scope.ServiceProvider;
-			//	await InitializeRoles(services);
-			//}
 
 			Configure(app);
 
@@ -63,8 +57,12 @@ namespace ReviewService
 				options.User.RequireUniqueEmail = userOptions.GetValue<bool>("RequireUniqueEmail");
 			});
 
+			services.AddScoped<IUserService, UserService.Service.UserService>();
+            services.AddScoped<IJwtGeneratorService, JwtGeneratorService>();
 
-			services.AddControllers();
+
+
+            services.AddControllers();
 
 			services.AddEndpointsApiExplorer();
 			services.AddSwaggerGen();
@@ -72,11 +70,10 @@ namespace ReviewService
 			services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 			services.AddJwtAuthentication(configuration);
-			
-			services.AddScoped<IUserService, UserService.Service.UserService>();
-			//services.AddScoped(typeof(IBaseRepository<User>), typeof(BaseRepository<User>));
 
-		}
+			services.AddExceptionHandler<GlobalExceptionHandler>();
+			services.AddProblemDetails();
+        }
 
 		private static void Configure(WebApplication app)
 		{
@@ -85,6 +82,7 @@ namespace ReviewService
 				app.UseSwagger();
 				app.UseSwaggerUI();
 			}
+            app.UseExceptionHandler();
 
 			app.UseHttpsRedirection();
 
@@ -92,22 +90,8 @@ namespace ReviewService
 			app.UseAuthorization();
 
 			app.MapControllers();
-		}
 
+        }
 
-		public static async Task InitializeRoles(IServiceProvider serviceProvider)
-		{
-			var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
-
-			var roles = new[] { "Admin", "Moderator", "User" };
-
-			foreach (var role in roles)
-			{
-				if (!await roleManager.RoleExistsAsync(role))
-				{
-					await roleManager.CreateAsync(new IdentityRole<Guid>(role));
-				}
-			}
-		}
 	}
 }
