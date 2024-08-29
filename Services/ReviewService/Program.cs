@@ -1,4 +1,6 @@
 
+using MovieReviewApp.Common.Middlewares;
+
 namespace ReviewService
 {
 	public class Program
@@ -24,7 +26,10 @@ namespace ReviewService
 			services.AddSwaggerGen();
 
 			services.AddJwtAuthentication(configuration);
-		}
+
+            services.AddExceptionHandler<GlobalExceptionHandler>();
+            services.AddProblemDetails();
+        }
 
 		private static void Configure(WebApplication app)
 		{
@@ -33,6 +38,7 @@ namespace ReviewService
 				app.UseSwagger();
 				app.UseSwaggerUI();
 			}
+            app.UseExceptionHandler();
 
 			app.UseHttpsRedirection();
 
@@ -40,6 +46,8 @@ namespace ReviewService
 			app.UseAuthorization();
 
 			app.MapControllers();
-		}
-	}
+
+
+        }
+    }
 }

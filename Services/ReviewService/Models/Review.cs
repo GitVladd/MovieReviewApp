@@ -19,7 +19,8 @@ namespace ReviewService.Models
 		[Range(1, 5)]
 		public int Rating { get; set; }
 
-		public string Comment { get; set; }
+        [StringLength(2000)]
+        public string Comment { get; set; }
 
 		[Column(TypeName = "Date")]
 		public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
