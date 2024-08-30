@@ -1,94 +1,60 @@
-﻿using AutoMapper;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MovieReviewApp.Common.Repository;
 using MovieService.Dtos.CategoryDto;
-using MovieService.Models;
-using System.Reflection;
+using MovieService.Service;
 
 namespace MovieService.Controllers
 {
 
-	[ApiController]
-	[Route("api/[controller]")]
-	public class CategoryController : ControllerBase
-	{
-		private readonly ILogger<CategoryController> _logger;
-		private readonly IBaseRepository<Category> _repository;
-		private readonly IMapper _mapper;
-		public CategoryController(ILogger<CategoryController> logger, IBaseRepository<Category> repository, IMapper mapper)
-		{
-			_logger = logger;
-			_repository = repository;
-			_mapper = mapper;
-		}
+    [ApiController]
+    [Route("api/categories")]
+    public class CategoryController : ControllerBase
+    {
+        private readonly ICategoryService _service;
+        public CategoryController(
+            ICategoryService service)
+        {
+            _service = service;
+        }
 
-		[HttpGet]
-		public async Task<ActionResult<List<CategoryGetDto>>> GetAll()
-		{
-			if (!ModelState.IsValid) return BadRequest(ModelState);
+        [HttpGet]
+        public async Task<ActionResult<List<CategoryGetDto>>> GetAll()
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
-			try
-			{
-				var entities = await _repository.GetAsync();
-				var entitiesGetDtos = _mapper.Map<IEnumerable<CategoryGetDto>>(entities);
-				return Ok(entitiesGetDtos);
-			}
-			catch (Exception ex)
-			{
-				var className = this.GetType().Name;
-				var methodName = MethodBase.GetCurrentMethod()?.Name;
-				_logger.LogError(ex, $"Error in {className}.{methodName}");
-				return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while fetching categories.");
-			}
-		}
+            var entitiesGetDtos = await _service.GetAsync();
 
-		[HttpGet("{id:Guid}")]
-		public async Task<ActionResult<List<CategoryGetDto>>> GetById([FromRoute] Guid id)
-		{
-			if (!ModelState.IsValid) return BadRequest(ModelState);
+            if (entitiesGetDtos == null || !entitiesGetDtos.Any())
+                return NotFound();
 
-			try
-			{
-				var entity = await _repository.GetByIdAsync(id);
+            return Ok(entitiesGetDtos);
+        }
 
-				if (entity == null)
-					return NotFound();
+        [HttpGet("{id:Guid}")]
+        public async Task<ActionResult<List<CategoryGetDto>>> GetById([FromRoute] Guid id)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
-				return Ok(_mapper.Map<CategoryGetDto>(entity));
-			}
-			catch (Exception ex)
-			{
-				var className = this.GetType().Name;
-				var methodName = MethodBase.GetCurrentMethod()?.Name;
-				_logger.LogError(ex, $"Error in {className}.{methodName}");
-				return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while fetching the category.");
-			}
-		}
+            var entityGetDto = await _service.GetByIdAsync(id);
 
-		[HttpPost]
-		public async Task<ActionResult<CategoryGetDto>> Create([FromBody] CategoryCreateDto createDto)
-		{
-			if (!ModelState.IsValid) return BadRequest(ModelState);
+            if (entityGetDto == null)
+                return NotFound();
 
-			try
-			{
-				var entity = _mapper.Map<Category>(createDto);
+            return Ok(entityGetDto);
+        }
 
-				_repository.Create(entity);
-				await _repository.SaveAsync();
 
-				var entityGetDto = _mapper.Map<CategoryGetDto>(entity);
 
-				return CreatedAtAction(nameof(GetById), new { id = entityGetDto.Id }, entityGetDto);
-			}
-			catch (Exception ex)
-			{
-				var className = this.GetType().Name;
-				var methodName = MethodBase.GetCurrentMethod()?.Name;
-				_logger.LogError(ex, $"Error in {className}.{methodName}");
-				return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while creating the category.");
-			}
+        [HttpPost]
+        [Authorize(Roles = "Admin, Moderator")]
+        public async Task<ActionResult<CategoryGetDto>> Create([FromBody] CategoryCreateDto createDto)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
-		}
-	}
+            var entityGetDto = await _service.CreateAsync(createDto);
+
+            return CreatedAtAction(nameof(GetById), new { id = entityGetDto.Id }, entityGetDto);
+
+        }
+    }
 }

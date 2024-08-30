@@ -1,95 +1,54 @@
-﻿using AutoMapper;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MovieReviewApp.Common.Repository;
 using MovieService.Dtos.ContentTypeDto;
-using MovieService.Models;
-using System.Reflection;
+using MovieService.Service;
 
 namespace MovieService.Controllers
 {
 
-	[ApiController]
-	[Route("api/[controller]")]
-	public class ContentTypeController : Controller
-	{
-		private readonly ILogger<ContentTypeController> _logger;
-		private readonly IBaseRepository<ContentType> _repository;
-		private readonly IMapper _mapper;
-		public ContentTypeController(ILogger<ContentTypeController> logger, IBaseRepository<ContentType> repository, IMapper mapper)
-		{
-			_logger = logger;
-			_repository = repository;
-			_mapper = mapper;
-		}
+    [ApiController]
+    [Route("api/contenttypes")]
+    public class ContentTypeController : Controller
+    {
+        private readonly IContentTypeService _service;
+        public ContentTypeController(
+            IContentTypeService service)
+        {
+            _service = service;
+        }
 
-		[HttpGet]
-		public async Task<ActionResult<List<ContentTypeGetDto>>> GetAll()
-		{
-			if (!ModelState.IsValid) return BadRequest(ModelState);
+        [HttpGet]
+        public async Task<ActionResult<List<ContentTypeGetDto>>> GetAll()
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            var entitiesGetDtos = await _service.GetAsync();
+            return Ok(entitiesGetDtos);
+        }
 
-			try
-			{
-				var entities = await _repository.GetAsync();
-				var entitiesGetDtos = _mapper.Map<IEnumerable<ContentTypeGetDto>>(entities);
-				return Ok(entitiesGetDtos);
-			}
-			catch (Exception ex)
-			{
-				var className = this.GetType().Name;
-				var methodName = MethodBase.GetCurrentMethod()?.Name;
-				_logger.LogError(ex, $"Error in {className}.{methodName}");
-				return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while fetching content types.");
-			}
-		}
+        [HttpGet("{id:Guid}")]
+        public async Task<ActionResult<List<ContentTypeGetDto>>> GetById([FromRoute] Guid id)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
-		[HttpGet("{id:Guid}")]
-		public async Task<ActionResult<List<ContentTypeGetDto>>> GetById([FromRoute] Guid id)
-		{
-			if (!ModelState.IsValid) return BadRequest(ModelState);
+            var entityGetDto = await _service.GetByIdAsync(id);
 
-			try
-			{
-				var entity = await _repository.GetByIdAsync(id);
+            if (entityGetDto == null)
+                return NotFound();
 
-				if (entity == null)
-					return NotFound();
+            return Ok(entityGetDto);
+        }
 
-				return Ok(_mapper.Map<ContentTypeGetDto>(entity));
-			}
-			catch (Exception ex)
-			{
-				var className = this.GetType().Name;
-				var methodName = MethodBase.GetCurrentMethod()?.Name;
-				_logger.LogError(ex, $"Error in {className}.{methodName}");
-				return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while fetching the content type.");
-			}
 
-		}
+        [HttpPost]
+        [Authorize(Roles = "Admin, Moderator")]
+        public async Task<ActionResult<ContentTypeGetDto>> Create([FromBody] ContentTypeCreateDto createDto)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
-		[HttpPost]
-		public async Task<ActionResult<ContentTypeGetDto>> Create([FromBody] ContentTypeCreateDto createDto)
-		{
-			if (!ModelState.IsValid) return BadRequest(ModelState);
+            var entityGetDto = await _service.CreateAsync(createDto);
 
-			try
-			{
-				var entity = _mapper.Map<ContentType>(createDto);
+            return CreatedAtAction(nameof(GetById), new { id = entityGetDto.Id }, entityGetDto);
 
-				_repository.Create(entity);
-				await _repository.SaveAsync();
-
-				var entityGetDto = _mapper.Map<ContentTypeGetDto>(entity);
-
-				return CreatedAtAction(nameof(GetById), new { id = entityGetDto.Id }, entityGetDto);
-			}
-			catch (Exception ex)
-			{
-				var className = this.GetType().Name;
-				var methodName = MethodBase.GetCurrentMethod()?.Name;
-				_logger.LogError(ex, $"Error in {className}.{methodName}");
-				return StatusCode(StatusCodes.Status500InternalServerError, "An error occurred while creating the contnt type.");
-			}
-
-		}
-	}
+        }
+    }
 }

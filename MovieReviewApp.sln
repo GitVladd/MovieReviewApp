@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Manifest", "Manifest", "{8E
 		Manifest\movieservice-np-srv.yaml = Manifest\movieservice-np-srv.yaml
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService", "Services\UserService\UserService.csproj", "{581AD4B0-DAE5-4A10-BE69-7B973F60A1CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +38,10 @@ Global
 		{F2368DF4-51BF-439A-8C2C-8E256E80CAB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2368DF4-51BF-439A-8C2C-8E256E80CAB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2368DF4-51BF-439A-8C2C-8E256E80CAB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{581AD4B0-DAE5-4A10-BE69-7B973F60A1CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{581AD4B0-DAE5-4A10-BE69-7B973F60A1CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{581AD4B0-DAE5-4A10-BE69-7B973F60A1CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{581AD4B0-DAE5-4A10-BE69-7B973F60A1CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -43,6 +49,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{186075F5-C053-476B-B933-B1099D175CD4} = {8771CA48-2503-430F-AB35-A7E36CC1F936}
 		{0A3D3D20-B898-4C5E-B2D8-01321766A307} = {8771CA48-2503-430F-AB35-A7E36CC1F936}
+		{581AD4B0-DAE5-4A10-BE69-7B973F60A1CD} = {8771CA48-2503-430F-AB35-A7E36CC1F936}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {420977AD-4B04-48F8-A8A1-633F39D54206}

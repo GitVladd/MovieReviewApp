@@ -10,6 +10,7 @@ namespace MovieService.Repository
 	{
 		Task<List<Movie>> GetAllWithDetailsAsync(
 			Expression<Func<Movie, bool>> predicate = null,
+			IEnumerable<Expression<Func<Movie, object>>> include = null,
 			int take = int.MaxValue, int skip = 0,
 			IEnumerable<Expression<Func<Movie, object>>> sortBy = null,
 			SortDirection sortDirection = SortDirection.Ascending,

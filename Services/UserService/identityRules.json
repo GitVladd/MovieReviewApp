@@ -1,0 +1,19 @@
+﻿{
+	"PasswordRules": {
+		"RequireDigit": true,
+		"RequireLowercase": true,
+		"RequireUppercase": true,
+		"RequireNonAlphanumeric": true,
+		"RequiredLength": 8,
+		"RequiredUniqueChars": 3
+	},
+	"LockoutRules": {
+		"DefaultLockoutTimeSpanMinutes": 1,
+		"MaxFailedAccessAttempts": 5,
+		"AllowedForNewUsers": true
+	},
+	"UserRules": {
+		"AllowedUserNameCharacters": "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_",
+		"RequireUniqueEmail": true
+	}
+}
