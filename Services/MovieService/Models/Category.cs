@@ -9,7 +9,8 @@ namespace MovieService.Models
 		public Guid Id { get; set; }
 
 		[Required]
-		public string Name { get; set; }
+        [MinLength(1, ErrorMessage = "Name cannot be empty.")]
+        public string Name { get; set; }
 
 		public IEnumerable<Movie> Movies { get; set; }
 	}

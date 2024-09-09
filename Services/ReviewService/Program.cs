@@ -1,51 +1,74 @@
 
+using MassTransit;
 using MovieReviewApp.Common.Middlewares;
+using ReviewService.AsyncDataClients;
+using ReviewService.Dtos;
 
 namespace ReviewService
 {
-	public class Program
-	{
-		public static void Main(string[] args)
-		{
-			var builder = WebApplication.CreateBuilder(args);
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
 
-			ConfigureServices(builder.Services, builder.Configuration);
+            ConfigureServices(builder.Services, builder.Configuration);
 
-			var app = builder.Build();
+            var app = builder.Build();
 
-			Configure(app);
+            Configure(app);
 
-			app.Run();
-		}
+            app.Run();
+        }
 
-		private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
-		{
-			services.AddControllers();
+        private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddControllers();
 
-			services.AddEndpointsApiExplorer();
-			services.AddSwaggerGen();
+            services.AddEndpointsApiExplorer();
+            services.AddSwaggerGen();
 
-			services.AddJwtAuthentication(configuration);
+            services.AddJwtAuthentication(configuration);
 
             services.AddExceptionHandler<GlobalExceptionHandler>();
             services.AddProblemDetails();
+
+            var rabbitMQOptions = configuration.GetSection("RabbitMQ");
+
+            services.AddMassTransit(x =>
+            {
+               
+                x.UsingRabbitMq((context, cfg) =>
+                {
+                    cfg.Host(rabbitMQOptions["Host"], ushort.Parse(rabbitMQOptions["Port"]), "/", h =>
+                    {
+                        h.Username(rabbitMQOptions["Username"]);
+                        h.Password(rabbitMQOptions["Password"]);
+                    });
+                    cfg.ConfigureEndpoints(context);
+                });
+
+                x.AddRequestClient<MovieExistsRequestDto>();
+            });
+
+            services.AddTransient<MovieRequestClient>();
         }
 
-		private static void Configure(WebApplication app)
-		{
-			if (app.Environment.IsDevelopment())
-			{
-				app.UseSwagger();
-				app.UseSwaggerUI();
-			}
+        private static void Configure(WebApplication app)
+        {
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
             app.UseExceptionHandler();
 
-			app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
 
-			app.UseAuthentication();
-			app.UseAuthorization();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
-			app.MapControllers();
+            app.MapControllers();
 
 
         }

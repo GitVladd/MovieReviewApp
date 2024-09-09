@@ -17,9 +17,11 @@ namespace ReviewService.Service
 
         Task<ReviewGetDto> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
-        Task<ReviewGetDto> CreateAsync(ReviewCreateDto createDto);
+        Task<List<ReviewGetDto>> GetReviewsByMovieIdAsync(Guid movieId);
 
-        Task<ReviewGetDto> UpdateAsync(Guid id, ReviewUpdateDto updateDto);
+        Task<ReviewGetDto> CreateAsync(ReviewCreateDto createDto, Guid UserId);
+
+        Task<ReviewGetDto> UpdateAsync(Guid id, ReviewUpdateDto updateDto, Guid UserId);
 
         Task DeleteAsync(Guid id);
     }

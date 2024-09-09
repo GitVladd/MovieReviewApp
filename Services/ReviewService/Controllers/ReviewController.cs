@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ReviewService.Dtos;
 using ReviewService.Service;
+using System.Security.Claims;
 
 namespace ReviewService.Controllers
 {
@@ -26,6 +26,10 @@ namespace ReviewService.Controllers
         {
 
             var result = await _reviewService.GetReviewsByMovieIdAsync(movieId);
+            if (result == null)
+            {
+                return NotFound();
+            }
             return Ok(result);
         }
 
@@ -43,7 +47,13 @@ namespace ReviewService.Controllers
         [Authorize(Roles = "User")]
         public async Task<ActionResult<ReviewGetDto>> Create([FromBody] ReviewCreateDto createDto)
         {
-            var createdReview = await _reviewService.CreateAsync(createDto);
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userIdString == null) return Unauthorized();
+
+            var userId = Guid.Parse(userIdString);
+
+            var createdReview = await _reviewService.CreateAsync(createDto, userId);
             return CreatedAtAction(nameof(GetById), new { id = createdReview.Id }, createdReview);
         }
 
@@ -51,7 +61,13 @@ namespace ReviewService.Controllers
         [Authorize(Roles = "User")]
         public async Task<ActionResult<ReviewGetDto>> Update(Guid id, [FromBody] ReviewUpdateDto updateDto)
         {
-            var updatedReview = await _reviewService.UpdateAsync(id, updateDto);
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userIdString == null) return Unauthorized();
+
+            var userId = Guid.Parse(userIdString);
+
+            var updatedReview = await _reviewService.UpdateAsync(id, updateDto, userId);
             if (updatedReview == null)
                 return NotFound();
 
@@ -59,11 +75,24 @@ namespace ReviewService.Controllers
         }
 
         [HttpDelete("{id:Guid}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, Moderator, User")]
         public async Task<ActionResult> Delete(Guid id)
         {
-            await _reviewService.DeleteAsync(id);
-            return NoContent();
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (userIdString == null) return Unauthorized();
+
+            var userId = Guid.Parse(userIdString);
+            var review = await _reviewService.GetByIdAsync(id);
+            if (review == null) return NotFound();
+
+            if (User.IsInRole("Admin") || User.IsInRole("Moderator") || review.UserId == userId)
+            {
+
+                await _reviewService.DeleteAsync(id);
+                return NoContent();
+            }
+
+            return Forbid();
         }
     }
 }

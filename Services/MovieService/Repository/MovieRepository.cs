@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieReviewApp.Common.Enums;
 using MovieReviewApp.Common.Repository;
-using MovieReviewApp.Data;
+using MovieService.Data;
 using MovieService.Models;
 using System.Linq.Expressions;
 
 namespace MovieService.Repository
 {
-	public class MovieRepository : BaseRepository<Movie>, IMovieRepository
+    public class MovieRepository : BaseRepository<Movie>, IMovieRepository
 	{
 		public MovieRepository(ApplicationDbContext context) : base(context)
 		{
