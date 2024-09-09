@@ -15,8 +15,7 @@ namespace MovieService.HealthCheck
         {
             try
             {
-                await _context.Database.CanConnectAsync();
-                return true;
+                return await _context.Database.CanConnectAsync();
             }
             catch
             {

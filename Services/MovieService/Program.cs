@@ -26,10 +26,10 @@ namespace MovieService
 
             var app = builder.Build();
 
-            //#if DEBUG
+            #if DEBUG
             PrintConfiguration(builder.Configuration);
             CheckDbConnection(app);
-            //#endif
+            #endif
 
             Configure(app);
 
@@ -134,6 +134,7 @@ namespace MovieService
                 if (!canConnect)
                 {
                     logger.LogError("Error. No database connection");
+                    throw new Exception("Error. No database connection");
                 }
                 logger.LogWarning("DB IS CONNECTED");
             }
