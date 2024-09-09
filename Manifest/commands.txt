@@ -1,0 +1,17 @@
+docker build -t vladockerhub/movieservice -f Services/MovieService/Dockerfile .
+docker build -t vladockerhub/reviewservice -f Services/ReviewService/Dockerfile .
+docker build -t vladockerhub/userservice -f Services/UserService/Dockerfile .
+
+docker push vladockerhub/movieservice
+docker push vladockerhub/reviewservice
+docker push vladockerhub/userservice
+
+kubectl apply -f Manifest/secrets.yaml
+
+kubectl apply -f Manifest/movieservice-depl.yaml
+kubectl apply -f Manifest/reviewservice-depl.yaml
+kubectl apply -f Manifest/userservice-depl.yaml
+
+kubectl rollout restart deployment movieservice
+kubectl rollout restart deployment reviewservice
+kubectl rollout restart deployment userservice

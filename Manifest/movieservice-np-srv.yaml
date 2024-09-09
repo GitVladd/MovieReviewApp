@@ -9,5 +9,5 @@ spec:
   ports:
     - name: movieservice
       protocol: TCP
-      port: 80
-      targetPort: 80
+      port: 81
+      targetPort: 81
