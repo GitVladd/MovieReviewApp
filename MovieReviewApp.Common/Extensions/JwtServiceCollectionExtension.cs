@@ -3,7 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 
-public static class ServiceCollectionExtensions
+public static class JwtServiceCollectionExtension
 {
 	public static void AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
 	{
