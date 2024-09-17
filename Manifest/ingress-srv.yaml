@@ -17,6 +17,20 @@ spec:
                 name: movieservice-clusterip-srv
                 port:
                   number: 80
+          - path: /api/categories
+            pathType: Prefix
+            backend:
+              service:
+                name: movieservice-clusterip-srv
+                port:
+                  number: 80
+          - path: /api/contenttypes
+            pathType: Prefix
+            backend:
+              service:
+                name: movieservice-clusterip-srv
+                port:
+                  number: 80
           - path: /api/reviews
             pathType: Prefix
             backend:

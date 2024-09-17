@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: movieservice
+  name: movieservice-depl
 spec:
   replicas: 1
   selector:
@@ -19,51 +19,43 @@ spec:
             - name: Jwt__Key
               valueFrom:
                 secretKeyRef:
-                  name: my-secrets
+                  name: jwt-secrets
                   key: JwtKey
             - name: Jwt__Issuer
               valueFrom:
                 secretKeyRef:
-                  name: my-secrets
+                  name: jwt-secrets
                   key: JwtIssuer
             - name: Jwt__Audience
               valueFrom:
                 secretKeyRef:
-                  name: my-secrets
+                  name: jwt-secrets
                   key: JwtAudience
             - name: RabbitMQ__Host
               valueFrom:
                 secretKeyRef:
-                  name: my-secrets
+                  name:  rabbitmq-secrets
                   key: RabbitMQHost
             - name: RabbitMQ__Port
               valueFrom:
                 secretKeyRef:
-                  name: my-secrets
+                  name:  rabbitmq-secrets
                   key: RabbitMQPort
             - name: RabbitMQ__Username
               valueFrom:
                 secretKeyRef:
-                  name: my-secrets
+                  name:  rabbitmq-secrets
                   key: RabbitMQUsername
             - name: RabbitMQ__Password
               valueFrom:
                 secretKeyRef:
-                  name: my-secrets
+                  name:  rabbitmq-secrets
                   key: RabbitMQPassword
             - name: ConnectionStrings__DefaultConnection
               valueFrom:
                 secretKeyRef:
-                  name: movie-service-secrets
+                  name: movieservice-db-connection-secrets
                   key: ConnectionStringsDefaultConnection
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: movie-service-secrets
-type: Opaque
-data:
-  ConnectionStringsDefaultConnection: RGF0YSBTb3VyY2U9REVTS1RPUC1PNVBBOUxCXFxTUUxFWFBSRVNTO0luaXRpYWwgQ2F0YWxvZz1Nb3ZpZUFwcERiO0ludGVncmF0ZWQgU2VjdXJpdHk9VHJ1ZTtDb25uZWN0IFRpbWVvdXQ9MzA7RW5jcnlwdD1GYWxzZTtUcnVzdFNlcnZlckNlcnRpZmljYXRlPUZhbHNlO0FwcGxpY2F0aW9uSW50ZW50PVJlYWRXcml0ZTtNdWx0aVN1Ym5ldEZhaWxvdmVyPUZhbHNl
 ---
 apiVersion: v1
 kind: Service
