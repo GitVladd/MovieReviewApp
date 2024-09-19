@@ -164,7 +164,7 @@ namespace MovieService.Service
 			var entity = await _repository.GetByIdWithDetailsAsync(id);
 			if (entity == null)
 			{
-				throw new EntityNotFoundException($"Movie type not found. id:{id}");
+				throw new EntityNotFoundException($"Movie not found. id:{id}");
             }
 
             _repository.Delete(entity);
