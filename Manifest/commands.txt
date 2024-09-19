@@ -7,6 +7,22 @@ docker push vladockerhub/reviewservice
 docker push vladockerhub/userservice
 
 kubectl apply -f Manifest/secrets.yaml
+kubectl apply -f Manifest/jwt-secrets.yaml
+
+kubectl apply -f Manifest/rabbitmq-secrets.yaml
+kubectl apply -f Manifest/rabbitmq-depl.yaml
+
+kubectl apply -f Manifest/movieservice-secrets.yaml
+kubectl apply -f Manifest/reviewservice-secrets.yaml
+kubectl apply -f Manifest/userservice-secrets.yaml
+
+kubectl apply -f Manifest/movieservice-pvc.yaml
+kubectl apply -f Manifest/reviewservice-pvc.yaml
+kubectl apply -f Manifest/userservice-pvc.yaml
+
+kubectl apply -f Manifest/movieservice-db-depl.yaml
+kubectl apply -f Manifest/reviewservice-db-depl.yaml
+kubectl apply -f Manifest/userservice-db-depl.yaml
 
 kubectl apply -f Manifest/movieservice-depl.yaml
 kubectl apply -f Manifest/reviewservice-depl.yaml
