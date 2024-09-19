@@ -17,8 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserService", "Services\Use
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Movie", "Movie", "{4BBFD830-2E60-4CE3-BB5D-00AD6BB2CE3E}"
 	ProjectSection(SolutionItems) = preProject
-		Manifest\movieservice-depl.yaml = Manifest\movieservice-depl.yaml
 		Manifest\movieservice-db-depl.yaml = Manifest\movieservice-db-depl.yaml
+		Manifest\movieservice-depl.yaml = Manifest\movieservice-depl.yaml
 		Manifest\movieservice-np-srv.yaml = Manifest\movieservice-np-srv.yaml
 		Manifest\movieservice-pvc.yaml = Manifest\movieservice-pvc.yaml
 		Manifest\movieservice-secrets.yaml = Manifest\movieservice-secrets.yaml
@@ -26,16 +26,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Movie", "Movie", "{4BBFD830
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Review", "Review", "{6AD28C6C-8EB5-4CCF-9A40-41615AB2067F}"
 	ProjectSection(SolutionItems) = preProject
-		Manifest\reviewservice-depl.yaml = Manifest\reviewservice-depl.yaml
 		Manifest\reviewservice-db-depl.yaml = Manifest\reviewservice-db-depl.yaml
+		Manifest\reviewservice-depl.yaml = Manifest\reviewservice-depl.yaml
 		Manifest\reviewservice-pvc.yaml = Manifest\reviewservice-pvc.yaml
 		Manifest\reviewservice-secrets.yaml = Manifest\reviewservice-secrets.yaml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "User", "User", "{DBFAD35B-018B-40F8-B7CE-9B47DAA04239}"
 	ProjectSection(SolutionItems) = preProject
-		Manifest\userservice-depl.yaml = Manifest\userservice-depl.yaml
 		Manifest\userservice-db-depl.yaml = Manifest\userservice-db-depl.yaml
+		Manifest\userservice-depl.yaml = Manifest\userservice-depl.yaml
 		Manifest\userservice-pvc.yaml = Manifest\userservice-pvc.yaml
 		Manifest\userservice-secrets.yaml = Manifest\userservice-secrets.yaml
 	EndProjectSection
