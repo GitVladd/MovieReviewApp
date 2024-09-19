@@ -38,7 +38,14 @@ spec:
                 name: reviewservice-clusterip-srv
                 port:
                   number: 80
-          - path: /api/users
+          - path: /api/users/register
+            pathType: Prefix
+            backend:
+              service:
+                name: userservice-clusterip-srv
+                port:
+                  number: 80
+          - path: /api/users/login
             pathType: Prefix
             backend:
               service:
