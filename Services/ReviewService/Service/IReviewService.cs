@@ -15,14 +15,14 @@ namespace ReviewService.Service
             SortDirection sortDirection = SortDirection.Ascending,
             CancellationToken cancellationToken = default);
 
-        Task<ReviewGetDto> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+        Task<ReviewGetDto> GetByIdAsync(Guid reviewId, CancellationToken cancellationToken = default);
 
         Task<List<ReviewGetDto>> GetReviewsByMovieIdAsync(Guid movieId);
 
         Task<ReviewGetDto> CreateAsync(ReviewCreateDto createDto, Guid UserId);
 
-        Task<ReviewGetDto> UpdateAsync(Guid id, ReviewUpdateDto updateDto, Guid UserId);
+        Task<ReviewGetDto> UpdateAsync(Guid reviewId, ReviewUpdateDto updateDto, Guid UserId);
 
-        Task DeleteAsync(Guid id);
+        Task DeleteAsync(Guid reviewId, Guid UserId);
     }
 }

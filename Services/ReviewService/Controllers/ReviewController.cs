@@ -62,9 +62,7 @@ namespace ReviewService.Controllers
         public async Task<ActionResult<ReviewGetDto>> Update(Guid id, [FromBody] ReviewUpdateDto updateDto)
         {
             var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
             if (userIdString == null) return Unauthorized();
-
             var userId = Guid.Parse(userIdString);
 
             var updatedReview = await _reviewService.UpdateAsync(id, updateDto, userId);
@@ -76,23 +74,18 @@ namespace ReviewService.Controllers
 
         [HttpDelete("{id:Guid}")]
         [Authorize(Roles = "Admin, Moderator, User")]
-        public async Task<ActionResult> Delete(Guid id)
+        public async Task<ActionResult> Delete(Guid reviewId)
         {
             var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (userIdString == null) return Unauthorized();
 
             var userId = Guid.Parse(userIdString);
-            var review = await _reviewService.GetByIdAsync(id);
+            var review = await _reviewService.GetByIdAsync(reviewId);
             if (review == null) return NotFound();
 
-            if (User.IsInRole("Admin") || User.IsInRole("Moderator") || review.UserId == userId)
-            {
+            await _reviewService.DeleteAsync(reviewId, userId);
 
-                await _reviewService.DeleteAsync(id);
-                return NoContent();
-            }
-
-            return Forbid();
+            return NoContent();
         }
     }
 }
