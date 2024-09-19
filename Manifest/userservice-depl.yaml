@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: userservice-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: userservice
+  template:
+    metadata:
+      labels:
+        app: userservice
+    spec:
+      containers:
+        - name: userservice
+          image: vladockerhub/userservice:latest
+          env:
+            - name: Jwt__Key
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secrets
+                  key: JwtKey
+            - name: Jwt__Issuer
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secrets
+                  key: JwtIssuer
+            - name: Jwt__Audience
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secrets
+                  key: JwtAudience
+            - name: RabbitMQ__Host
+              valueFrom:
+                secretKeyRef:
+                  name:  rabbitmq-secrets
+                  key: RabbitMQHost
+            - name: RabbitMQ__Port
+              valueFrom:
+                secretKeyRef:
+                  name:  rabbitmq-secrets
+                  key: RabbitMQPort
+            - name: RabbitMQ__Username
+              valueFrom:
+                secretKeyRef:
+                  name:  rabbitmq-secrets
+                  key: RabbitMQUsername
+            - name: RabbitMQ__Password
+              valueFrom:
+                secretKeyRef:
+                  name:  rabbitmq-secrets
+                  key: RabbitMQPassword
+            - name: ConnectionStrings__DefaultConnection
+              valueFrom:
+                secretKeyRef:
+                  name: userservice-db-connection-secrets
+                  key: ConnectionStringsDefaultConnection
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: userservice-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: userservice
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080

@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: userservice-db-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: userservice-db
+  template:
+    metadata:
+      labels:
+        app: userservice-db
+    spec:
+      containers:
+        - name: mssql
+          image: mcr.microsoft.com/mssql/server:2022-latest
+          ports:
+            - containerPort: 1433
+          env:
+          - name: MSSQL_PID
+            value: "Express"
+          - name: ACCEPT_EULA
+            value: "Y"
+          - name: SA_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: userservice-db-secrets
+                key:  SA_PASSWORD
+          volumeMounts:
+          - mountPath: /var/opt/mssql/data
+            name: userservice-db-volume
+      volumes:
+      - name: userservice-db-volume
+        persistentVolumeClaim:
+          claimName: userservice-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: userservice-db-clusterip-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: userservice-db
+  ports:
+  - name: mssql
+    protocol: TCP
+    port: 1433
+    targetPort: 1433
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: userservice-db-loadbalancer-srv
+# spec:
+#   type: LoadBalancer
+#   selector:
+#     app: userservice-db
+#   ports:
+#   - protocol: TCP
+#     port: 1433
+#     targetPort: 1433

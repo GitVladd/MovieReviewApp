@@ -7,18 +7,50 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieService", "Services\Mo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReviewService", "Services\ReviewService\ReviewService.csproj", "{0A3D3D20-B898-4C5E-B2D8-01321766A307}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieReviewApp.Common", "MovieReviewApp.CommonModels\MovieReviewApp.Common.csproj", "{F2368DF4-51BF-439A-8C2C-8E256E80CAB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieReviewApp.Common", "MovieReviewApp.Common\MovieReviewApp.Common.csproj", "{F2368DF4-51BF-439A-8C2C-8E256E80CAB9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{8771CA48-2503-430F-AB35-A7E36CC1F936}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Manifest", "Manifest", "{8E288C5E-14DE-40A2-A36E-2C3064526448}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserService", "Services\UserService\UserService.csproj", "{581AD4B0-DAE5-4A10-BE69-7B973F60A1CD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Movie", "Movie", "{4BBFD830-2E60-4CE3-BB5D-00AD6BB2CE3E}"
 	ProjectSection(SolutionItems) = preProject
-		Manifest\ingress-srv.yaml = Manifest\ingress-srv.yaml
-		Manifest\movieservice-deployment.yaml = Manifest\movieservice-deployment.yaml
+		Manifest\movieservice-depl.yaml = Manifest\movieservice-depl.yaml
+		Manifest\movieservice-db-depl.yaml = Manifest\movieservice-db-depl.yaml
 		Manifest\movieservice-np-srv.yaml = Manifest\movieservice-np-srv.yaml
+		Manifest\movieservice-pvc.yaml = Manifest\movieservice-pvc.yaml
+		Manifest\movieservice-secrets.yaml = Manifest\movieservice-secrets.yaml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserService", "Services\UserService\UserService.csproj", "{581AD4B0-DAE5-4A10-BE69-7B973F60A1CD}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Review", "Review", "{6AD28C6C-8EB5-4CCF-9A40-41615AB2067F}"
+	ProjectSection(SolutionItems) = preProject
+		Manifest\reviewservice-depl.yaml = Manifest\reviewservice-depl.yaml
+		Manifest\reviewservice-db-depl.yaml = Manifest\reviewservice-db-depl.yaml
+		Manifest\reviewservice-pvc.yaml = Manifest\reviewservice-pvc.yaml
+		Manifest\reviewservice-secrets.yaml = Manifest\reviewservice-secrets.yaml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "User", "User", "{DBFAD35B-018B-40F8-B7CE-9B47DAA04239}"
+	ProjectSection(SolutionItems) = preProject
+		Manifest\userservice-depl.yaml = Manifest\userservice-depl.yaml
+		Manifest\userservice-db-depl.yaml = Manifest\userservice-db-depl.yaml
+		Manifest\userservice-pvc.yaml = Manifest\userservice-pvc.yaml
+		Manifest\userservice-secrets.yaml = Manifest\userservice-secrets.yaml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RabbitMQ", "RabbitMQ", "{443B712E-3BBC-490B-97BE-0F8E7F4B1310}"
+	ProjectSection(SolutionItems) = preProject
+		Manifest\rabbitmq-depl.yaml = Manifest\rabbitmq-depl.yaml
+		Manifest\rabbitmq-secrets.yaml = Manifest\rabbitmq-secrets.yaml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Other", "Other", "{89B7162A-D670-4786-94B1-66E6117D7B80}"
+	ProjectSection(SolutionItems) = preProject
+		Manifest\ingress-srv.yaml = Manifest\ingress-srv.yaml
+		Manifest\jwt-secrets.yaml = Manifest\jwt-secrets.yaml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +82,11 @@ Global
 		{186075F5-C053-476B-B933-B1099D175CD4} = {8771CA48-2503-430F-AB35-A7E36CC1F936}
 		{0A3D3D20-B898-4C5E-B2D8-01321766A307} = {8771CA48-2503-430F-AB35-A7E36CC1F936}
 		{581AD4B0-DAE5-4A10-BE69-7B973F60A1CD} = {8771CA48-2503-430F-AB35-A7E36CC1F936}
+		{4BBFD830-2E60-4CE3-BB5D-00AD6BB2CE3E} = {8E288C5E-14DE-40A2-A36E-2C3064526448}
+		{6AD28C6C-8EB5-4CCF-9A40-41615AB2067F} = {8E288C5E-14DE-40A2-A36E-2C3064526448}
+		{DBFAD35B-018B-40F8-B7CE-9B47DAA04239} = {8E288C5E-14DE-40A2-A36E-2C3064526448}
+		{443B712E-3BBC-490B-97BE-0F8E7F4B1310} = {8E288C5E-14DE-40A2-A36E-2C3064526448}
+		{89B7162A-D670-4786-94B1-66E6117D7B80} = {8E288C5E-14DE-40A2-A36E-2C3064526448}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {420977AD-4B04-48F8-A8A1-633F39D54206}

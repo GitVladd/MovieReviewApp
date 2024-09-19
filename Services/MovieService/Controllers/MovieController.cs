@@ -10,15 +10,19 @@ namespace MovieService.Controllers
     public class MovieController : ControllerBase
     {
         private readonly IMovieService _movieService;
+        private readonly ILogger<MovieController> _looger;
         public MovieController(
-            IMovieService movieService)
+            IMovieService movieService, ILogger<MovieController> looger)
         {
             _movieService = movieService;
+            _looger = looger;
         }
         [HttpGet]
         public async Task<ActionResult<List<MovieGetDto>>> GetAll()
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            _looger.LogWarning("Get all request");
 
             var result = await _movieService.GetAllWithDetailsAsync();
             return Ok(result);

@@ -87,12 +87,19 @@ namespace MovieService.Service
 
 			if (entity == null)
 			{
-				return null; // Return null to indicate not found
+				return null;
 			}
 			var entityGetDto = _mapper.Map<MovieGetDto>(entity);
 			return entityGetDto;
 		}
-		public async Task<MovieGetDto> CreateAsync(MovieCreateDto createDto)
+
+        public async Task<bool> MovieExistsAsync(Guid movieId, CancellationToken cancellationToken = default)
+        {
+            var exists = await _repository.GetAsync(predicate : m => m.Id == movieId);
+            return exists != null;
+        }
+
+        public async Task<MovieGetDto> CreateAsync(MovieCreateDto createDto)
 		{
 			var contentType = await _contentTypeService.GetByIdAsync(createDto.ContentTypeId);
 			if (contentType == null)
@@ -157,7 +164,7 @@ namespace MovieService.Service
 			var entity = await _repository.GetByIdWithDetailsAsync(id);
 			if (entity == null)
 			{
-				throw new EntityNotFoundException($"Movie type not found. id:{id}");
+				throw new EntityNotFoundException($"Movie not found. id:{id}");
             }
 
             _repository.Delete(entity);

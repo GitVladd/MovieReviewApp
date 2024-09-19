@@ -1,7 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
+using MovieReviewApp.Common.Entities;
 using MovieReviewApp.Common.Enums;
 using MovieReviewApp.Common.Exceptions;
 using MovieReviewApp.Common.Repository;
+using ReviewService.AsyncDataClients;
 using ReviewService.Dtos;
 using ReviewService.Models;
 using System.Linq.Expressions;
@@ -10,14 +14,17 @@ namespace ReviewService.Service
 {
     public class ReviewService : IReviewService
     {
-
         private readonly IBaseRepository<Review> _repository;
         private readonly IMapper _mapper;
+        private readonly MovieRequestClient _client;
 
-        public ReviewService(IBaseRepository<Review> repository, IMapper mapper)
+        public ReviewService(IBaseRepository<Review> repository,
+                             IMapper mapper,
+                             MovieRequestClient client)
         {
             _repository = repository;
             _mapper = mapper;
+            _client = client;
         }
 
         public async Task<IEnumerable<ReviewGetDto>> GetAsync(
@@ -49,14 +56,26 @@ namespace ReviewService.Service
                 return null;
             }
 
-            var result = _mapper.Map<ReviewGetDto>(entity);
-            return result;
+            return _mapper.Map<ReviewGetDto>(entity);
         }
 
-        public async Task<ReviewGetDto> CreateAsync(ReviewCreateDto createDto)
+        public async Task<List<ReviewGetDto>> GetReviewsByMovieIdAsync(Guid movieId)
         {
-            throw new NotImplementedException();
+            var entities = await _repository.GetAsync(predicate: r => r.MovieId == movieId);
+
+            if(entities == null || !entities.Any())
+            {
+                return null;
+            }
+
+            return _mapper.Map<List<ReviewGetDto>>(entities);
+        }
+        public async Task<ReviewGetDto> CreateAsync(ReviewCreateDto createDto, Guid UserId)
+        {
             //check if userid and movieid exists
+            bool bExist = await _client.MovieExistsAsync(createDto.MovieId);
+
+            if (!bExist) throw new EntityNotFoundException($"Movie not found. id:{createDto.MovieId}");
             var entity = _mapper.Map<Review>(createDto);
             _repository.Create(entity);
             await _repository.SaveAsync();
@@ -64,58 +83,35 @@ namespace ReviewService.Service
             return result;
         }
 
-        public async Task<ReviewGetDto> UpdateAsync(Guid id, ReviewUpdateDto updateDto)
+        public async Task<ReviewGetDto> UpdateAsync(Guid reviewId, ReviewUpdateDto updateDto, Guid UserId)
         {
-            throw new NotImplementedException();
-            /*
-            var entity = await _repository.GetByIdWithDetailsAsync(id);
-            if (entity == null)
+            var entities = await _repository.GetAsync(m => reviewId == m.Id);
+            if (entities == null || entities.Count == 0)
                 return null;
 
-            if (entity.ContentType.Id != updateDto.ContentTypeId)
-            {
-                var contentType = await _contentTypeService.GetByIdAsync(updateDto.ContentTypeId);
-                if (contentType == null)
-                {
-                    throw new EntityNotFoundException($"Content type not found. id:{updateDto.ContentTypeId}");
+            var entity = _mapper.Map(updateDto, entities.First());
 
-                }
-                entity.ContentType = _mapper.Map<ContentType>(contentType);
-            }
-
-            var categories = await _categoryService.GetAsync(c => updateDto.CategoryIds.Contains(c.Id));
-            var missingCategoryIds = updateDto.CategoryIds
-                .Where(categoryId => !categories.Select(c => c.Id).Contains(categoryId))
-                .ToList();
-            if (missingCategoryIds.Any())
-            {
-                throw new EntityNotFoundException($"Category not found. id:{string.Join(", id:", missingCategoryIds)}");
-
-            }
-
-            entity = _mapper.Map(updateDto, entity);
+            if (entity.UserId != UserId) throw new UnauthorizedAccessException("You are not authorized to update this review.");
 
             _repository.Update(entity);
             await _repository.SaveAsync();
 
             var movieGetDto = _mapper.Map<ReviewGetDto>(entity);
             return movieGetDto;
-            */
         }
 
-        public async Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(Guid reviewId, Guid UserId)
         {
-            throw new NotImplementedException();
-            /*
-            var entity = await _repository.GetByIdWithDetailsAsync(id);
-            if (entity == null)
-            {
-                throw new EntityNotFoundException($"Movie type not found. id:{id}");
-            }
+            var entities = await _repository.GetAsync(m => reviewId == m.Id);
+            if (entities == null || entities.Count == 0)
+                throw new EntityNotFoundException($"Review not found. id:{reviewId}");
+
+            var entity = entities.First();
+
+            if (entity.UserId != UserId) throw new UnauthorizedAccessException("You are not authorized to delete this review.");
 
             _repository.Delete(entity);
             await _repository.SaveAsync();
-             */
         }
     }
 }

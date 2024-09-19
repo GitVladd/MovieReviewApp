@@ -16,7 +16,8 @@ namespace MovieService.Service
 			CancellationToken cancellationToken = default);
 		Task<IEnumerable<MovieGetDto>> GetAllWithDetailsAsync(CancellationToken cancellationToken = default);
 		Task<MovieGetDto> GetByIdWithDetailsAsync(Guid id, CancellationToken cancellationToken = default);
-		Task<MovieGetDto> CreateAsync(MovieCreateDto createDto);
+		Task<bool> MovieExistsAsync(Guid movieId, CancellationToken cancellationToken = default);
+        Task<MovieGetDto> CreateAsync(MovieCreateDto createDto);
 		Task<MovieGetDto> UpdateAsync(Guid id, MovieUpdateDto updateDto);
 		Task DeleteAsync(Guid id);
 	}
