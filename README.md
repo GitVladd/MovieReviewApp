@@ -1,9 +1,8 @@
 # MovieReviewApp
 
-On Development
-kubectl apply -f movieservice-np-srv.yaml
-or On Deploy
-kubectl apply -f ingress-srv.yaml 
-
-
-kubectl apply -f movieservice-deployment.yaml
+TO DO:
+add elastic search
+add redis for caching
+add more routes
+add pagination 
+add frontend
