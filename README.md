@@ -1,8 +1,7 @@
-# MovieReviewApp
+# TODO List for MovieReviewApp
 
-TO DO:
-add elastic search
-add redis for caching
-add more routes
-add pagination 
-add frontend
+- [ ] Add Elasticsearch
+- [ ] Add Redis for caching
+- [ ] Add more routes
+- [ ] Add pagination
+- [ ] Add frontend (Angular)
