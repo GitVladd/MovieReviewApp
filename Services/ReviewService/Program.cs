@@ -1,7 +1,9 @@
 
 using MassTransit;
+using Microsoft.EntityFrameworkCore;
 using MovieReviewApp.Common.Middlewares;
 using ReviewService.AsyncDataClients;
+using ReviewService.Data;
 using ReviewService.Dtos;
 
 namespace ReviewService
@@ -23,6 +25,10 @@ namespace ReviewService
 
         private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
+
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<DbContext, ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+
             services.AddControllers();
 
             services.AddEndpointsApiExplorer();
