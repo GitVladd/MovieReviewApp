@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: reviewservice-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: 'true'
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: acme.com
+      http:
+        paths:
+          - path: /api/reviews
+            pathType: Prefix
+            backend:
+              service:
+                name: reviewservice-clusterip-srv
+                port:
+                  number: 80
+          - path: /api/movies/(?<movieId>[0-9a-fA-F-]+)/reviews
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: reviewservice-clusterip-srv
+                port:
+                  number: 80

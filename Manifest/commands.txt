@@ -28,6 +28,24 @@ kubectl apply -f Manifest/movieservice-depl.yaml
 kubectl apply -f Manifest/reviewservice-depl.yaml
 kubectl apply -f Manifest/userservice-depl.yaml
 
-kubectl rollout restart deployment movieservice
-kubectl rollout restart deployment reviewservice
-kubectl rollout restart deployment userservice
+kubectl apply -f Manifest/movieservice-job-db-migration.yaml
+kubectl apply -f Manifest/reviewservice-job-db-migration.yaml
+kubectl apply -f Manifest/userservice-job-db-migration.yaml
+
+kubectl apply -f Manifest/movieservice-ingress.yaml
+kubectl apply -f Manifest/reviewservice-ingress.yaml
+kubectl apply -f Manifest/userservice-ingress.yaml
+
+kubectl rollout restart deployment movieservice-depl
+kubectl rollout restart deployment reviewservice-depl
+kubectl rollout restart deployment userservice-depl
+
+
+kubectl delete job reviewservice-job-db-migration
+
+kubectl exec -it reviewservice-depl-5d58bf7784-jrsz4 -- /bin/bash
+opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'A1b2C3!dd' -C
+SELECT name FROM sys.databases;
+go
+
+exit

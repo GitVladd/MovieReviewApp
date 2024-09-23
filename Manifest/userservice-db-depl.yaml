@@ -48,16 +48,16 @@ spec:
     protocol: TCP
     port: 1433
     targetPort: 1433
-# ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: userservice-db-loadbalancer-srv
-# spec:
-#   type: LoadBalancer
-#   selector:
-#     app: userservice-db
-#   ports:
-#   - protocol: TCP
-#     port: 1433
-#     targetPort: 1433
+---
+ apiVersion: v1
+ kind: Service
+ metadata:
+   name: userservice-db-nodeport-srv
+ spec:
+   type: NodePort
+   selector:
+     app: userservice-db
+   ports:
+   - protocol: TCP
+     port: 1433
+     targetPort: 1433
