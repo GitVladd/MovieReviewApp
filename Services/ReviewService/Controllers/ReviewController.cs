@@ -7,7 +7,7 @@ using System.Security.Claims;
 namespace ReviewService.Controllers
 {
     [ApiController]
-    [Route("api/reviews")]
+    [Route("api")]
     public class ReviewController : ControllerBase
     {
         private readonly ILogger<ReviewController> _logger;
@@ -21,7 +21,7 @@ namespace ReviewService.Controllers
             _reviewService = reviewService;
         }
 
-        [HttpGet("movies/{movieId:Guid}")]
+        [HttpGet("movies/{movieId:Guid}/reviews")]
         public async Task<ActionResult<List<ReviewGetDto>>> GetReviewsForMovie(Guid movieId)
         {
 
@@ -33,7 +33,7 @@ namespace ReviewService.Controllers
             return Ok(result);
         }
 
-        [HttpGet("{id:Guid}")]
+        [HttpGet("reviews/{id:Guid}")]
         public async Task<ActionResult<ReviewGetDto>> GetById(Guid id)
         {
             var review = await _reviewService.GetByIdAsync(id);
@@ -43,7 +43,7 @@ namespace ReviewService.Controllers
             return Ok(review);
         }
 
-        [HttpPost]
+        [HttpPost("reviews")]
         [Authorize(Roles = "User")]
         public async Task<ActionResult<ReviewGetDto>> Create([FromBody] ReviewCreateDto createDto)
         {
@@ -57,7 +57,7 @@ namespace ReviewService.Controllers
             return CreatedAtAction(nameof(GetById), new { id = createdReview.Id }, createdReview);
         }
 
-        [HttpPut("{id:Guid}")]
+        [HttpPut("reviews/{id:Guid}")]
         [Authorize(Roles = "User")]
         public async Task<ActionResult<ReviewGetDto>> Update(Guid id, [FromBody] ReviewUpdateDto updateDto)
         {
@@ -72,7 +72,7 @@ namespace ReviewService.Controllers
             return Ok(updatedReview);
         }
 
-        [HttpDelete("{id:Guid}")]
+        [HttpDelete("reviews/{id:Guid}")]
         [Authorize(Roles = "Admin, Moderator, User")]
         public async Task<ActionResult> Delete(Guid reviewId)
         {
