@@ -19,6 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Movie", "Movie", "{4BBFD830
 	ProjectSection(SolutionItems) = preProject
 		Manifest\movieservice-db-depl.yaml = Manifest\movieservice-db-depl.yaml
 		Manifest\movieservice-depl.yaml = Manifest\movieservice-depl.yaml
+		Manifest\movieservice-ingress.yaml = Manifest\movieservice-ingress.yaml
 		Manifest\movieservice-np-srv.yaml = Manifest\movieservice-np-srv.yaml
 		Manifest\movieservice-pvc.yaml = Manifest\movieservice-pvc.yaml
 		Manifest\movieservice-secrets.yaml = Manifest\movieservice-secrets.yaml
@@ -28,6 +29,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Review", "Review", "{6AD28C
 	ProjectSection(SolutionItems) = preProject
 		Manifest\reviewservice-db-depl.yaml = Manifest\reviewservice-db-depl.yaml
 		Manifest\reviewservice-depl.yaml = Manifest\reviewservice-depl.yaml
+		Manifest\reviewservice-ingress.yaml = Manifest\reviewservice-ingress.yaml
 		Manifest\reviewservice-pvc.yaml = Manifest\reviewservice-pvc.yaml
 		Manifest\reviewservice-secrets.yaml = Manifest\reviewservice-secrets.yaml
 	EndProjectSection
@@ -36,6 +38,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "User", "User", "{DBFAD35B-0
 	ProjectSection(SolutionItems) = preProject
 		Manifest\userservice-db-depl.yaml = Manifest\userservice-db-depl.yaml
 		Manifest\userservice-depl.yaml = Manifest\userservice-depl.yaml
+		Manifest\userservice-ingress.yaml = Manifest\userservice-ingress.yaml
 		Manifest\userservice-pvc.yaml = Manifest\userservice-pvc.yaml
 		Manifest\userservice-secrets.yaml = Manifest\userservice-secrets.yaml
 	EndProjectSection
@@ -48,9 +51,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RabbitMQ", "RabbitMQ", "{44
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Other", "Other", "{89B7162A-D670-4786-94B1-66E6117D7B80}"
 	ProjectSection(SolutionItems) = preProject
-		Manifest\ingress-srv.yaml = Manifest\ingress-srv.yaml
 		Manifest\jwt-secrets.yaml = Manifest\jwt-secrets.yaml
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontend", "Frontend", "{A7EE5BFE-98FA-49F4-9B2E-E4B5079FC119}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "MovieReviewClient", "Frontend\MovieReviewClient\MovieReviewClient.esproj", "{F92EF5BD-CB00-4CDE-967D-DDB69726FC9C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -74,6 +80,12 @@ Global
 		{581AD4B0-DAE5-4A10-BE69-7B973F60A1CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{581AD4B0-DAE5-4A10-BE69-7B973F60A1CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{581AD4B0-DAE5-4A10-BE69-7B973F60A1CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F92EF5BD-CB00-4CDE-967D-DDB69726FC9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F92EF5BD-CB00-4CDE-967D-DDB69726FC9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F92EF5BD-CB00-4CDE-967D-DDB69726FC9C}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{F92EF5BD-CB00-4CDE-967D-DDB69726FC9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F92EF5BD-CB00-4CDE-967D-DDB69726FC9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F92EF5BD-CB00-4CDE-967D-DDB69726FC9C}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,6 +99,7 @@ Global
 		{DBFAD35B-018B-40F8-B7CE-9B47DAA04239} = {8E288C5E-14DE-40A2-A36E-2C3064526448}
 		{443B712E-3BBC-490B-97BE-0F8E7F4B1310} = {8E288C5E-14DE-40A2-A36E-2C3064526448}
 		{89B7162A-D670-4786-94B1-66E6117D7B80} = {8E288C5E-14DE-40A2-A36E-2C3064526448}
+		{F92EF5BD-CB00-4CDE-967D-DDB69726FC9C} = {A7EE5BFE-98FA-49F4-9B2E-E4B5079FC119}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {420977AD-4B04-48F8-A8A1-633F39D54206}
