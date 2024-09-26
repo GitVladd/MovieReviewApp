@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using MovieReviewApp.Common.Enums;
-using MovieReviewApp.Common.Repository;
 using MovieService.Dtos.ContentTypeDto;
+using MovieService.Enums;
 using MovieService.Models;
+using MovieService.Repository;
 using System.Linq.Expressions;
 
 namespace MovieService.Service

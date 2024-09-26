@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MovieService.Dtos;
 using MovieService.Dtos.MovieDto;
 using MovieService.Service;
 
@@ -18,8 +19,9 @@ namespace MovieService.Controllers
             _looger = looger;
         }
         [HttpGet]
-        public async Task<ActionResult<List<MovieGetDto>>> GetAll()
+        public async Task<ActionResult<List<MovieGetDto>>> GetAll([FromQuery] string? categoryName, [FromQuery] string? contentTypeName)
         {
+            throw new NotImplementedException();
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             _looger.LogWarning("Get all request");
@@ -39,6 +41,19 @@ namespace MovieService.Controllers
                 return NotFound();
 
             return Ok(entity);
+        }
+
+       
+        ////////////
+
+
+        [HttpGet("{id}/reviews")]
+        public async Task<IActionResult> GetMovieWithReviews(Guid id)
+        {
+            throw new NotImplementedException();
+            var movie = await _movieService.GetMovieByIdAsync(id);
+            var reviews = await _reviewService.GetReviewsByMovieIdAsync(id);
+            return Ok(new { Movie = movie, Reviews = reviews });
         }
 
         [HttpPost]

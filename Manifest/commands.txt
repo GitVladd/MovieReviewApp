@@ -8,6 +8,8 @@ docker push vladockerhub/userservice
 
 kubectl apply -f Manifest/secrets.yaml
 kubectl apply -f Manifest/jwt-secrets.yaml
+kubectl apply -f Manifest/cors-configmap.yaml
+kubectl apply -f Manifest/ingress-srv.yaml
 
 kubectl apply -f Manifest/rabbitmq-secrets.yaml
 kubectl apply -f Manifest/rabbitmq-depl.yaml
@@ -30,7 +32,7 @@ kubectl apply -f Manifest/userservice-depl.yaml
 
 kubectl apply -f Manifest/movieservice-job-db-migration.yaml
 kubectl apply -f Manifest/reviewservice-job-db-migration.yaml
-kubectl apply -f Manifest/userservice-job-db-migration.yaml
+kubectl apply -f Manifest/userservice-job-db-migration.yaml 
 
 kubectl apply -f Manifest/movieservice-ingress.yaml
 kubectl apply -f Manifest/reviewservice-ingress.yaml

@@ -1,14 +1,14 @@
-﻿using MovieReviewApp.Common.Entities;
+﻿using MovieService.Entities;
 using System.ComponentModel.DataAnnotations;
 
 namespace MovieService.Models
 {
-	public class ContentType : IEntity
-	{
-		[Key]
-		public Guid Id { get; set; }
+    public class ContentType : IEntity
+    {
+        [Key]
+        public Guid Id { get; set; }
 
-		[Required]
+        [Required]
         [MinLength(1, ErrorMessage = "Name cannot be empty.")]
         public string Name { get; set; }
 

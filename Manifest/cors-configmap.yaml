@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cors-config
+data:
+  AllowedOrigins__0: "https://localhost:5001"
+  AllowedOrigins__1: "https://acme.com"

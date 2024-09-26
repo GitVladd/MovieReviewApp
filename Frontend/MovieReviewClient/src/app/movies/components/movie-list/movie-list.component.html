@@ -1,0 +1,17 @@
+<!-- movie-list.component.html -->
+<div>
+    <h1>Movie List</h1>
+  
+    <div *ngFor="let movie of movies" class="movie-item">
+      <h3>{{ movie.title }}</h3>
+      <p>{{ movie.description }}</p>
+      <!--<app-rating [rating]="movie.rating"></app-rating> --> 
+    </div>
+  
+    <div class="pagination">
+      <button (click)="changePage(currentPage - 1)" [disabled]="currentPage === 1">Previous</button>
+      <span>Page {{ currentPage }} of {{ totalPages }}</span>
+      <button (click)="changePage(currentPage + 1)" [disabled]="currentPage === totalPages">Next</button>
+    </div>
+  </div>
+  

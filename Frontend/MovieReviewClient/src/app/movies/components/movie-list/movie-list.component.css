@@ -1,0 +1,16 @@
+/* movie-list.component.css */
+.movie-item {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+  }
+  
+  .pagination {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  button {
+    margin: 0 5px;
+  }
+  

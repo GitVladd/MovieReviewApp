@@ -4,6 +4,6 @@ namespace UserService.Service
 {
     public interface IJwtGeneratorService
     {
-        Task<string> GenerateJwtTokenAsync(User user, IList<string> userRoles);
+        string GenerateJwtToken(User user, IList<string> userRoles);
     }
 }

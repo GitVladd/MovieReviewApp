@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
-using MovieReviewApp.Common.Exceptions;
 using UserService.Dtos;
 using UserService.Exceptions;
 using UserService.Models;
@@ -29,12 +28,12 @@ namespace UserService.Service
             var user = _mapper.Map<User>(userRegisterDto);
 
             var result = await _userManager.CreateAsync(user, userRegisterDto.Password);
+
+            HandleUserCreationResult(result);
+
             try
             {
-                HandleUserCreationResult(result);
-
                 var roleName = "User";
-
                 var roleAssigned = await AssignRoleToUserAsync(user.Id, roleName);
 
                 if (!roleAssigned)
@@ -48,7 +47,7 @@ namespace UserService.Service
             }
 
             var userRoles = await _userManager.GetRolesAsync(user);
-            return await _jwtGeneratorService.GenerateJwtTokenAsync(user, userRoles);
+            return _jwtGeneratorService.GenerateJwtToken(user, userRoles);
 
 
         }
@@ -64,7 +63,7 @@ namespace UserService.Service
 
             var userRoles = await _userManager.GetRolesAsync(user);
 
-            return await _jwtGeneratorService.GenerateJwtTokenAsync(user, userRoles);
+            return _jwtGeneratorService.GenerateJwtToken(user, userRoles);
         }
 
         public async Task<bool> AssignRoleToUserAsync(Guid userId, string roleName)

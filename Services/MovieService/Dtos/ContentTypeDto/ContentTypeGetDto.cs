@@ -1,10 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace MovieService.Dtos.ContentTypeDto
+﻿namespace MovieService.Dtos.ContentTypeDto
 {
-	public class ContentTypeGetDto
-	{
-		public Guid Id { get; set; }
-		public string Name { get; set; }
-	}
+    public class ContentTypeGetDto
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+    }
 }

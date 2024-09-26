@@ -1,13 +1,10 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using MovieReviewApp.Common.Entities;
-using MovieReviewApp.Common.Enums;
-using MovieReviewApp.Common.Exceptions;
-using MovieReviewApp.Common.Repository;
 using ReviewService.AsyncDataClients;
 using ReviewService.Dtos;
+using ReviewService.Enums;
+using ReviewService.Exceptions;
 using ReviewService.Models;
+using ReviewService.Repository;
 using System.Linq.Expressions;
 
 namespace ReviewService.Service
@@ -63,7 +60,7 @@ namespace ReviewService.Service
         {
             var entities = await _repository.GetAsync(predicate: r => r.MovieId == movieId);
 
-            if(entities == null || !entities.Any())
+            if (entities == null || !entities.Any())
             {
                 return null;
             }

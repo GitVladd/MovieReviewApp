@@ -1,5 +1,5 @@
-﻿using MovieReviewApp.Common.Enums;
-using ReviewService.Dtos;
+﻿using ReviewService.Dtos;
+using ReviewService.Enums;
 using ReviewService.Models;
 using System.Linq.Expressions;
 

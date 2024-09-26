@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieService", "Services\Mo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReviewService", "Services\ReviewService\ReviewService.csproj", "{0A3D3D20-B898-4C5E-B2D8-01321766A307}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieReviewApp.Common", "MovieReviewApp.Common\MovieReviewApp.Common.csproj", "{F2368DF4-51BF-439A-8C2C-8E256E80CAB9}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{8771CA48-2503-430F-AB35-A7E36CC1F936}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Manifest", "Manifest", "{8E288C5E-14DE-40A2-A36E-2C3064526448}"
@@ -51,6 +49,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RabbitMQ", "RabbitMQ", "{44
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Other", "Other", "{89B7162A-D670-4786-94B1-66E6117D7B80}"
 	ProjectSection(SolutionItems) = preProject
+		Manifest\cors-configmap.yaml = Manifest\cors-configmap.yaml
+		Manifest\ingress-srv.yaml = Manifest\ingress-srv.yaml
 		Manifest\jwt-secrets.yaml = Manifest\jwt-secrets.yaml
 	EndProjectSection
 EndProject
@@ -72,10 +72,6 @@ Global
 		{0A3D3D20-B898-4C5E-B2D8-01321766A307}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A3D3D20-B898-4C5E-B2D8-01321766A307}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A3D3D20-B898-4C5E-B2D8-01321766A307}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F2368DF4-51BF-439A-8C2C-8E256E80CAB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F2368DF4-51BF-439A-8C2C-8E256E80CAB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F2368DF4-51BF-439A-8C2C-8E256E80CAB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F2368DF4-51BF-439A-8C2C-8E256E80CAB9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{581AD4B0-DAE5-4A10-BE69-7B973F60A1CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{581AD4B0-DAE5-4A10-BE69-7B973F60A1CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{581AD4B0-DAE5-4A10-BE69-7B973F60A1CD}.Release|Any CPU.ActiveCfg = Release|Any CPU

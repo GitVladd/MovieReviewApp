@@ -1,11 +1,9 @@
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
-using MovieReviewApp.Common.Middlewares;
-using MovieReviewApp.Common.Repository;
 using MovieService.AsyncDataClients.Conusmers;
 using MovieService.Data;
-using MovieService.Dtos;
 using MovieService.HealthCheck;
+using MovieService.Middlewares;
 using MovieService.Models;
 using MovieService.Repository;
 using MovieService.Service;
@@ -14,22 +12,20 @@ namespace MovieService
 {
     public class Program
     {
-
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Configuration.AddUserSecrets<Program>();
 
-
             ConfigureServices(builder.Services, builder.Configuration);
 
             var app = builder.Build();
 
-            #if DEBUG
+#if DEBUG
             PrintConfiguration(builder.Configuration);
             CheckDbConnection(app);
-            #endif
+#endif
 
             Configure(app);
 
@@ -38,32 +34,58 @@ namespace MovieService
 
         private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<DbContext, ApplicationDbContext>(options => options.UseSqlServer(connectionString));
-
-            services.AddScoped<IDatabaseHealthCheck, DatabaseHealthCheck>();
-
-            services.AddControllers();
-
-            services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen();
-
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
-            services.AddJwtAuthentication(configuration);
+            ConfigureDatabase(services, configuration);
+            ConfigureHealthCheck(services);
+            ConfigureMassTransit(services, configuration);
+            ConfigureJwtAuthentication(services, configuration);
+            ConfigureSwagger(services);
 
             services.AddScoped<IMovieService, Service.MovieService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IContentTypeService, ContentTypeService>();
 
-
             services.AddScoped(typeof(IBaseRepository<ContentType>), typeof(BaseRepository<ContentType>));
             services.AddScoped(typeof(IBaseRepository<Category>), typeof(BaseRepository<Category>));
             services.AddScoped<IMovieRepository, MovieRepository>();
 
+            services.AddControllers();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             services.AddExceptionHandler<GlobalExceptionHandler>();
             services.AddProblemDetails();
+        }
 
+        private static void Configure(WebApplication app)
+        {
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
+
+            app.UseExceptionHandler();
+            app.UseCors("AllowSpecificOrigin");
+            app.UseHttpsRedirection();
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.MapControllers();
+        }
+
+        private static void ConfigureDatabase(IServiceCollection services, IConfiguration configuration)
+        {
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<DbContext, ApplicationDbContext>(options =>
+                options.UseSqlServer(connectionString));
+        }
+
+        private static void ConfigureHealthCheck(IServiceCollection services)
+        {
+            services.AddScoped<IDatabaseHealthCheck, DatabaseHealthCheck>();
+        }
+
+        private static void ConfigureMassTransit(IServiceCollection services, IConfiguration configuration)
+        {
             var rabbitMQOptions = configuration.GetSection("RabbitMQ");
 
             services.AddMassTransit(x =>
@@ -84,25 +106,17 @@ namespace MovieService
                     });
                 });
             });
-
         }
 
-        private static void Configure(WebApplication app)
+        private static void ConfigureJwtAuthentication(IServiceCollection services, IConfiguration configuration)
         {
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+            services.AddJwtAuthentication(configuration);
+        }
 
-            app.UseExceptionHandler();
-
-            app.UseHttpsRedirection();
-
-            app.UseAuthentication();
-            app.UseAuthorization();
-
-            app.MapControllers();
+        private static void ConfigureSwagger(IServiceCollection services)
+        {
+            services.AddEndpointsApiExplorer();
+            services.AddSwaggerGen();
         }
 
         private static void PrintConfiguration(IConfiguration configuration)

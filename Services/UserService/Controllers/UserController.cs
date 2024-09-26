@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using UserService.Dtos;
-using UserService.Exceptions;
 using UserService.Service;
 
 namespace UserService.Controllers

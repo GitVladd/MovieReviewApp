@@ -14,7 +14,7 @@ namespace UserService.Service
             _configuration = configuration;
         }
 
-        public async Task<string> GenerateJwtTokenAsync(User user, IList<string> userRoles)
+        public string GenerateJwtToken(User user, IList<string> userRoles)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Convert.FromBase64String(_configuration["Jwt:Key"]);

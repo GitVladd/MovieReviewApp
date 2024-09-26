@@ -6,32 +6,32 @@ using MovieService.Models;
 
 namespace MovieService.Profiles
 {
-	public class AutomapperProfile : Profile
-	{
-		public AutomapperProfile()
-		{
-			CreateMap<Movie, MovieGetDto>();
-			CreateMap<MovieGetDto, Movie>();
+    public class AutomapperProfile : Profile
+    {
+        public AutomapperProfile()
+        {
+            CreateMap<Movie, MovieGetDto>();
+            CreateMap<MovieGetDto, Movie>();
 
-			CreateMap<Movie, MovieCreateDto>();
-			CreateMap<MovieCreateDto, Movie>();
+            CreateMap<Movie, MovieCreateDto>();
+            CreateMap<MovieCreateDto, Movie>();
 
-			CreateMap<Movie, MovieUpdateDto>();
-			CreateMap<MovieUpdateDto, Movie>();
-
-
-			CreateMap<ContentType, ContentTypeGetDto>();
-			CreateMap<ContentTypeGetDto, ContentType>();
-
-			CreateMap<ContentType, ContentTypeCreateDto>();
-			CreateMap<ContentTypeCreateDto, ContentType>();
+            CreateMap<Movie, MovieUpdateDto>();
+            CreateMap<MovieUpdateDto, Movie>();
 
 
-			CreateMap<Category, CategoryGetDto>();
-			CreateMap<CategoryGetDto, Category>();
+            CreateMap<ContentType, ContentTypeGetDto>();
+            CreateMap<ContentTypeGetDto, ContentType>();
 
-			CreateMap<Category, CategoryCreateDto>();
-			CreateMap<CategoryCreateDto, Category>();
-		}
-	}
+            CreateMap<ContentType, ContentTypeCreateDto>();
+            CreateMap<ContentTypeCreateDto, ContentType>();
+
+
+            CreateMap<Category, CategoryGetDto>();
+            CreateMap<CategoryGetDto, Category>();
+
+            CreateMap<Category, CategoryCreateDto>();
+            CreateMap<CategoryCreateDto, Category>();
+        }
+    }
 }
